@@ -42,3 +42,4 @@ public/
 - Palette: blu/indaco spaziale, oro come accento, sfondo chiaro per le sezioni di contenuto
 - Animazioni GSAP con `ScrollTrigger` per reveal allo scroll, entrance della hero e parallax leggero; rispettano `prefers-reduced-motion`
 - Tabella comparativa sponsor: tabella completa su desktop, accordion per tier su mobile
+# dfls
