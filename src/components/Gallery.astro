@@ -1,0 +1,76 @@
+---
+import { venue } from "../data/content";
+---
+
+<div class="gallery">
+  {
+    venue.gallery.map((item) => (
+      <figure class="gallery__item reveal-up">
+        <div class="gallery__frame">
+          <img src={item.src} alt={item.alt} loading="lazy" />
+        </div>
+        <div class="gallery__overlay" />
+        <figcaption class="gallery__caption">{item.caption}</figcaption>
+      </figure>
+    ))
+  }
+</div>
+
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .gallery {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .gallery__item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  .gallery__frame {
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .gallery__frame img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.7s;
+  }
+
+  .gallery__item:hover .gallery__frame img {
+    transform: scale(1.05);
+  }
+
+  .gallery__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(var(--rgb-ink), 0.8), rgba(var(--rgb-ink), 0), transparent);
+  }
+
+  .gallery__caption {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    padding: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: white;
+  }
+
+  @media (min-width: 640px) {
+    .gallery__caption {
+      padding: 1.25rem;
+    }
+  }
+</style>

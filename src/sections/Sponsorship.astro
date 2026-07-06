@@ -1,0 +1,70 @@
+---
+import { tiers } from "../data/content";
+import SectionHeading from "../components/SectionHeading.astro";
+import TierCard from "../components/TierCard.astro";
+import ComparisonTable from "../components/ComparisonTable.astro";
+---
+
+<section id="pacchetti" class="sponsorship">
+  <div class="sponsorship__inner container">
+    <SectionHeading eyebrow="Come contribuire" title="Pacchetti Sponsor" />
+
+    <div class="sponsorship__grid">
+      {tiers.map((tier) => <TierCard tier={tier} />)}
+    </div>
+
+    <div class="sponsorship__table">
+      <h3 class="reveal-up">Tabella comparativa</h3>
+      <ComparisonTable />
+    </div>
+  </div>
+</section>
+
+<style>
+  .sponsorship {
+    position: relative;
+    background-color: var(--color-paper);
+    padding-block: 6rem;
+  }
+
+  @media (min-width: 640px) {
+    .sponsorship {
+      padding-block: 8rem;
+    }
+  }
+
+  .sponsorship__inner {
+    max-width: 80rem;
+  }
+
+  .sponsorship__grid {
+    margin-top: 4rem;
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .sponsorship__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: stretch;
+    }
+  }
+
+  .sponsorship__table {
+    margin-top: 5rem;
+  }
+
+  .sponsorship__table h3 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-primary-600);
+  }
+
+  @media (min-width: 640px) {
+    .sponsorship__table h3 {
+      font-size: 1.875rem;
+    }
+  }
+</style>

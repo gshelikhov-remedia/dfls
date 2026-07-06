@@ -1,0 +1,309 @@
+---
+import { nav } from "../data/content";
+---
+
+<header id="site-header" class="navbar" data-state="top">
+  <nav class="navbar__nav">
+    <div id="nav-inner" class="navbar__inner">
+      <a href="#top" class="navbar__brand" aria-label="Donne fra le Stelle — home">
+        <img src="/images/logo-white.svg" alt="Associazione Donne fra le Stelle" class="navbar__logo" />
+      </a>
+
+      <ul class="navbar__links">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} class="nav-link" data-href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="navbar__cta-wrap">
+        <a href="#pacchetti" class="navbar__cta"> Diventa Sponsor </a>
+      </div>
+
+      <button
+        id="menu-toggle"
+        type="button"
+        class="navbar__toggle"
+        aria-label="Apri il menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="sr-only">Menu</span>
+        <svg id="icon-open" class="navbar__toggle-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+        </svg>
+        <svg id="icon-close" class="navbar__toggle-icon is-hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="mobile-menu">
+    <ul class="mobile-menu__links">
+      {
+        nav.map((item) => (
+          <li>
+            <a href={item.href} class="mobile-nav-link">
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a href="#pacchetti" class="mobile-nav-link mobile-menu__cta"> Diventa Sponsor </a>
+  </div>
+</header>
+
+<style>
+  .navbar {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 50;
+    transition: all 0.3s;
+  }
+
+  .navbar__nav {
+    position: relative;
+    z-index: 50;
+    width: 100vw;
+  }
+
+  .navbar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0;
+    padding: 0.75rem var(--container-padding);
+    transition: all 0.3s;
+  }
+
+  .navbar__inner.is-scrolled {
+    background-color: rgba(var(--rgb-ink), 0.8);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 15px rgba(var(--rgb-black), 0.1);
+  }
+
+  .navbar__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .navbar__logo {
+    height: 5rem;
+    width: auto;
+    transition: height 0.3s ease;
+  }
+
+  .navbar__inner.is-scrolled .navbar__logo {
+    height: 2.75rem;
+  }
+
+  .navbar__links {
+    display: none;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  @media (min-width: 1024px) {
+    .navbar__links {
+      display: flex;
+    }
+  }
+
+  .nav-link {
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: rgba(var(--rgb-white), 0.9);
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover {
+    color: white;
+  }
+
+  .nav-link.is-active {
+    color: var(--color-sky-300);
+  }
+
+  .navbar__cta-wrap {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .navbar__cta-wrap {
+      display: block;
+    }
+  }
+
+  .navbar__cta {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    background-color: var(--color-sky-400);
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-ink);
+    transition: all 0.2s;
+  }
+
+  .navbar__cta:hover {
+    background-color: var(--color-sky-300);
+    transform: translateY(-2px);
+  }
+
+  .navbar__toggle {
+    position: relative;
+    display: flex;
+    height: 2.5rem;
+    width: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    color: white;
+  }
+
+  @media (min-width: 1024px) {
+    .navbar__toggle {
+      display: none;
+    }
+  }
+
+  .navbar__toggle-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+
+  .navbar__toggle-icon.is-hidden {
+    display: none;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: none;
+    flex-direction: column;
+    background-color: rgba(var(--rgb-ink), 0.98);
+    padding: 7rem 1.5rem 2.5rem;
+  }
+
+  .mobile-menu.is-open {
+    display: flex;
+  }
+
+  @media (min-width: 1024px) {
+    .mobile-menu {
+      display: none !important;
+    }
+  }
+
+  .mobile-menu__links {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .mobile-nav-link {
+    font-family: var(--font-display);
+    font-size: 1.875rem;
+    color: rgba(var(--rgb-white), 0.9);
+  }
+
+  .mobile-nav-link:hover {
+    color: var(--color-sky-300);
+  }
+
+  .mobile-menu__cta {
+    margin-inline: auto;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    background-color: var(--color-sky-400);
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+</style>
+
+<script>
+  const header = document.getElementById("site-header")!;
+  const navInner = document.getElementById("nav-inner")!;
+  const toggle = document.getElementById("menu-toggle")!;
+  const mobileMenu = document.getElementById("mobile-menu")!;
+  const iconOpen = document.getElementById("icon-open")!;
+  const iconClose = document.getElementById("icon-close")!;
+  const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".nav-link"));
+  const mobileLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".mobile-nav-link"));
+
+  function setScrolledState(scrolled: boolean) {
+    navInner.classList.toggle("is-scrolled", scrolled);
+    header.dataset.state = scrolled ? "scrolled" : "top";
+  }
+
+  function onScroll() {
+    setScrolledState(window.scrollY > 40);
+  }
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  function openMenu() {
+    mobileMenu.classList.add("is-open");
+    iconOpen.classList.add("is-hidden");
+    iconClose.classList.remove("is-hidden");
+    toggle.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+  function closeMenu() {
+    mobileMenu.classList.remove("is-open");
+    iconOpen.classList.remove("is-hidden");
+    iconClose.classList.add("is-hidden");
+    toggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+  toggle.addEventListener("click", () => {
+    const isOpen = mobileMenu.classList.contains("is-open");
+    isOpen ? closeMenu() : openMenu();
+  });
+  mobileLinks.forEach((link) => link.addEventListener("click", closeMenu));
+
+  // Scrollspy
+  const sections = navLinks
+    .map((link) => document.querySelector(link.dataset.href || ""))
+    .filter(Boolean) as HTMLElement[];
+
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = `#${entry.target.id}`;
+          navLinks.forEach((link) => {
+            link.classList.toggle("is-active", link.dataset.href === id);
+          });
+        }
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+  );
+  sections.forEach((section) => spy.observe(section));
+</script>

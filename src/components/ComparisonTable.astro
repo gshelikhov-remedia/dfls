@@ -1,0 +1,306 @@
+---
+import { comparisonTable, tiers } from "../data/content";
+
+function renderValue(value: boolean | string) {
+  if (value === true) return "check";
+  if (value === false) return "dash";
+  return value;
+}
+---
+
+<div class="reveal-up">
+  <!-- Desktop table -->
+  <div class="comparison-table">
+    <table>
+      <thead>
+        <tr class="comparison-table__head-row">
+          <th class="comparison-table__sticky comparison-table__head-label">Vantaggi</th>
+          {
+            comparisonTable.columns.map((col, i) => (
+              <th class="comparison-table__head-col">
+                <span class="comparison-table__head-col-name">{col}</span>
+                <span class="comparison-table__head-col-sub">
+                  {comparisonTable.columnSubtitles[i]}
+                </span>
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="comparison-table__row comparison-table__row--price">
+          <td class="comparison-table__sticky comparison-table__cell-label">Contribuzione</td>
+          {
+            comparisonTable.priceRow.map((price) => (
+              <td class="comparison-table__cell comparison-table__cell--price">{price}</td>
+            ))
+          }
+        </tr>
+        {
+          comparisonTable.rows.map((row, idx) => (
+            <tr class={`comparison-table__row ${idx % 2 === 1 ? "is-alt" : ""}`}>
+              <td class="comparison-table__sticky comparison-table__cell-label comparison-table__cell-label--muted">{row.label}</td>
+              {
+                row.values.map((value) => (
+                  <td class="comparison-table__cell">
+                    {renderValue(value) === "check" && (
+                      <svg class="comparison-table__check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                      </svg>
+                    )}
+                    {renderValue(value) === "dash" && <span class="comparison-table__dash">—</span>}
+                    {typeof value === "string" && (
+                      <span class="comparison-table__value-text">{value}</span>
+                    )}
+                  </td>
+                ))
+              }
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mobile accordion -->
+  <div class="tier-accordion">
+    {
+      tiers.map((tier, i) => (
+        <details class="tier-accordion__item" open={i === 0}>
+          <summary class="tier-accordion__summary">
+            <span>
+              <span class="tier-accordion__name">{tier.name}</span>
+              <span class="tier-accordion__meta">{tier.subtitle} · {tier.price}</span>
+            </span>
+            <svg class="tier-accordion__chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </summary>
+          <ul class="tier-accordion__list">
+            {comparisonTable.rows.map((row) => {
+              const value = row.values[i];
+              return (
+                <li class="tier-accordion__row">
+                  <span class="tier-accordion__row-label">{row.label}</span>
+                  {value === true && (
+                    <svg class="tier-accordion__check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                  )}
+                  {value === false && <span class="comparison-table__dash">—</span>}
+                  {typeof value === "string" && <span class="comparison-table__value-text">{value}</span>}
+                </li>
+              );
+            })}
+          </ul>
+        </details>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .comparison-table {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .comparison-table {
+      display: block;
+      overflow-x: auto;
+      border-radius: 1rem;
+      border: 1px solid var(--color-primary-100);
+      background-color: white;
+      box-shadow: 0 1px 2px rgba(var(--rgb-black), 0.05);
+    }
+  }
+
+  table {
+    width: 100%;
+    min-width: 47.5rem;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  .comparison-table__head-row {
+    background-color: var(--color-deep);
+    color: white;
+  }
+
+  .comparison-table__sticky {
+    position: sticky;
+    left: 0;
+  }
+
+  .comparison-table__head-label {
+    background-color: var(--color-deep);
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .comparison-table__head-col {
+    padding: 1rem;
+    text-align: center;
+    vertical-align: top;
+  }
+
+  .comparison-table__head-col-name {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1rem;
+  }
+
+  .comparison-table__head-col-sub {
+    margin-top: 0.25rem;
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-sky-300);
+  }
+
+  .comparison-table__row {
+    border-bottom: 1px solid var(--color-primary-100);
+    background-color: white;
+  }
+
+  .comparison-table__row--price {
+    background-color: rgba(var(--rgb-primary-50), 0.6);
+    font-weight: 600;
+  }
+
+  .comparison-table__row.is-alt {
+    background-color: rgba(var(--rgb-paper), 0.5);
+  }
+
+  .comparison-table__cell-label {
+    background-color: inherit;
+    padding: 0.75rem 1.25rem;
+    color: var(--color-ink);
+  }
+
+  .comparison-table__row--price .comparison-table__cell-label {
+    background-color: rgba(var(--rgb-primary-50), 0.6);
+  }
+
+  .comparison-table__cell-label--muted {
+    color: rgba(var(--rgb-ink), 0.8);
+  }
+
+  .comparison-table__cell {
+    padding: 0.75rem 1rem;
+    text-align: center;
+  }
+
+  .comparison-table__cell--price {
+    color: var(--color-ink);
+  }
+
+  .comparison-table__check {
+    margin-inline: auto;
+    height: 1.25rem;
+    width: 1.25rem;
+    color: var(--color-primary-600);
+  }
+
+  .comparison-table__dash {
+    color: rgba(var(--rgb-ink), 0.25);
+  }
+
+  .comparison-table__value-text {
+    font-weight: 600;
+    color: var(--color-primary-700);
+  }
+
+  /* Mobile accordion */
+  .tier-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .tier-accordion {
+      display: none;
+    }
+  }
+
+  .tier-accordion__item {
+    border-radius: 1rem;
+    border: 1px solid var(--color-primary-100);
+    background-color: white;
+    padding: 1rem;
+  }
+
+  .tier-accordion__item[open] {
+    box-shadow: 0 4px 6px rgba(var(--rgb-black), 0.1);
+  }
+
+  .tier-accordion__summary {
+    display: flex;
+    cursor: pointer;
+    list-style: none;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .tier-accordion__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .tier-accordion__name {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    color: var(--color-primary-600);
+  }
+
+  .tier-accordion__meta {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-primary-600);
+  }
+
+  .tier-accordion__chevron {
+    height: 1.25rem;
+    width: 1.25rem;
+    flex-shrink: 0;
+    color: var(--color-primary-600);
+    transition: transform 0.2s;
+  }
+
+  .tier-accordion__item[open] .tier-accordion__chevron {
+    transform: rotate(180deg);
+  }
+
+  .tier-accordion__list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-top: 1px solid var(--color-primary-100);
+    padding-top: 1rem;
+  }
+
+  .tier-accordion__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.875rem;
+  }
+
+  .tier-accordion__row-label {
+    color: rgba(var(--rgb-ink), 0.7);
+  }
+
+  .tier-accordion__check {
+    height: 1rem;
+    width: 1rem;
+    color: var(--color-primary-600);
+  }
+</style>

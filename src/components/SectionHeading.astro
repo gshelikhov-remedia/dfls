@@ -1,0 +1,83 @@
+---
+import StarIcon from "./StarIcon.astro";
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  align?: "left" | "center";
+  dark?: boolean;
+  class?: string;
+}
+
+const { eyebrow, title, align = "center", dark = false, class: className = "" } = Astro.props;
+---
+
+<div class={`section-heading reveal-up section-heading--${align} ${className}`}>
+  {
+    eyebrow && (
+      <span class={`section-heading__eyebrow ${dark ? "is-dark" : ""}`}>
+        <StarIcon size="0.875rem" />
+        {eyebrow}
+      </span>
+    )
+  }
+  <h2 class={`section-heading__title text-balance ${dark ? "is-dark" : ""}`}>
+    {title}
+  </h2>
+</div>
+
+<style>
+  .section-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .section-heading--center {
+    text-align: center;
+    align-items: center;
+  }
+
+  .section-heading--left {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .section-heading__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--color-primary-600);
+  }
+
+  .section-heading__eyebrow.is-dark {
+    color: var(--color-sky-300);
+  }
+
+  .section-heading__title {
+    font-family: var(--font-display);
+    font-size: 1.875rem;
+    letter-spacing: -0.02em;
+    color: var(--color-primary-600);
+  }
+
+  .section-heading__title.is-dark {
+    color: white;
+  }
+
+  @media (min-width: 640px) {
+    .section-heading__title {
+      font-size: 2.25rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .section-heading__title {
+      font-size: 3rem;
+    }
+  }
+</style>

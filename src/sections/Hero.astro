@@ -1,0 +1,211 @@
+---
+import { hero } from "../data/content";
+import Button from "../components/Button.astro";
+import LogoMarquee from "../components/LogoMarquee.astro";
+import StarIcon from "../components/StarIcon.astro";
+---
+
+<section id="top" class="hero">
+  <div class="hero__bg">
+    <video
+      src="/videos/bg-video-10sec.mp4"
+      class="hero__video"
+      autoplay
+      loop
+      muted
+      playsinline
+      poster="/images/hero-bg.webp"
+    ></video>
+    <div class="hero__gradient hero__gradient--vertical"></div>
+    <div class="hero__gradient hero__gradient--horizontal"></div>
+  </div>
+
+  <div class="hero__content container">
+    <span id="hero-eyebrow" class="hero__eyebrow">
+      <StarIcon size="0.875rem" />
+      {hero.eyebrow}
+    </span>
+
+    <h1 id="hero-title" class="hero__title text-balance">
+      <span class="hero__title-main">{hero.title}</span>
+    </h1>
+
+    <p id="hero-tagline" class="hero__tagline text-balance">
+      "{hero.tagline}"
+    </p>
+
+    <p id="hero-meta" class="hero__meta">
+      {hero.location} · {hero.venue}
+    </p>
+
+    <div id="hero-ctas" class="hero__ctas">
+      <Button href={hero.ctaPrimary.href} variant="primary">{hero.ctaPrimary.label}</Button>
+      <Button href={hero.ctaSecondary.href} variant="outline">{hero.ctaSecondary.label}</Button>
+    </div>
+  </div>
+
+  <div class="hero__marquee-wrap container">
+    <LogoMarquee />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    background-color: var(--color-ink);
+    padding-bottom: 5rem;
+    padding-top: 9rem;
+  }
+
+  @media (min-width: 640px) {
+    .hero {
+      padding-top: 10rem;
+    }
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.8;
+  }
+
+  .hero__gradient {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__gradient--vertical {
+    background: linear-gradient(
+      to bottom,
+      rgba(var(--rgb-ink), 0.4),
+      rgba(var(--rgb-ink), 0.7),
+      var(--color-ink)
+    );
+  }
+
+  .hero__gradient--horizontal {
+    background: linear-gradient(
+      to right,
+      rgba(var(--rgb-ink), 0.7),
+      transparent,
+      rgba(var(--rgb-ink), 0.7)
+    );
+  }
+
+  .hero__content {
+    position: relative;
+    max-width: 64rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero__eyebrow {
+    margin-bottom: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(var(--rgb-sky-400), 0.4);
+    background-color: rgba(var(--rgb-white), 0.05);
+    padding: 0.375rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--color-sky-300);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+
+  .hero__title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: var(--font-display);
+    color: white;
+  }
+
+  .hero__title-main {
+    margin-top: 0.25rem;
+    font-size: 2.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.08;
+    letter-spacing: 0.04em;
+  }
+
+  @media (min-width: 640px) {
+    .hero__title-main {
+      font-size: 3.75rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hero__title-main {
+      font-size: 4.5rem;
+    }
+  }
+
+  .hero__tagline {
+    margin-top: 1.5rem;
+    max-width: 42rem;
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    line-height: 1.625;
+    color: rgba(var(--rgb-white), 0.85);
+  }
+
+  @media (min-width: 640px) {
+    .hero__tagline {
+      font-size: 1.25rem;
+    }
+  }
+
+  .hero__meta {
+    margin-top: 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(var(--rgb-sky-300), 0.9);
+  }
+
+  @media (min-width: 640px) {
+    .hero__meta {
+      font-size: 1rem;
+    }
+  }
+
+  .hero__ctas {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .hero__ctas {
+      flex-direction: row;
+    }
+  }
+
+  .hero__marquee-wrap {
+    position: relative;
+    margin-top: 6rem;
+    max-width: 72rem;
+  }
+</style>

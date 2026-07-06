@@ -1,0 +1,143 @@
+---
+import { contact } from "../data/content";
+import SectionHeading from "../components/SectionHeading.astro";
+import ContactForm from "../components/ContactForm.astro";
+---
+
+<section id="contatti" class="contact">
+  <div class="contact__inner container">
+    <SectionHeading eyebrow="Parliamone" title={contact.heading} />
+
+    <div class="contact__grid">
+      <div class="contact__info reveal-up">
+        <div class="contact__card contact__card--dark">
+          <h3>Per informazioni</h3>
+          <ul>
+            <li>
+              <span class="contact__label">Email</span>
+              <a href={`mailto:${contact.email}`}>{contact.email}</a>
+            </li>
+            <li>
+              <span class="contact__label">Telefono</span>
+              <a href={`tel:${contact.phone.replace(/\s+/g, "")}`}>{contact.phone}</a>
+            </li>
+            <li>
+              <span class="contact__label">Sito</span>
+              <a href={`https://${contact.website}`}>{contact.website}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="contact__card contact__card--light">
+          <h3>{contact.presidentRole}</h3>
+          <p>{contact.presidentName}</p>
+          <a href={`mailto:${contact.presidentEmail}`} class="contact__president-email">
+            {contact.presidentEmail}
+          </a>
+        </div>
+      </div>
+
+      <ContactForm />
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    position: relative;
+    background-color: var(--color-paper);
+    padding-block: 6rem;
+  }
+
+  @media (min-width: 640px) {
+    .contact {
+      padding-block: 8rem;
+    }
+  }
+
+  .contact__inner {
+    max-width: 72rem;
+  }
+
+  .contact__grid {
+    margin-top: 3.5rem;
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .contact__grid {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+  }
+
+  .contact__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .contact__card {
+    border-radius: 1.5rem;
+    padding: 1.75rem;
+  }
+
+  .contact__card--dark {
+    background-color: var(--color-deep);
+    color: white;
+  }
+
+  .contact__card--dark h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+  }
+
+  .contact__card--dark ul {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .contact__card--dark li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .contact__label {
+    color: var(--color-sky-300);
+  }
+
+  .contact__card--dark a:hover {
+    color: var(--color-sky-300);
+  }
+
+  .contact__card--light {
+    border: 1px solid var(--color-primary-100);
+    background-color: white;
+  }
+
+  .contact__card--light h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--color-primary-600);
+  }
+
+  .contact__card--light p {
+    margin-top: 0.5rem;
+    color: rgba(var(--rgb-ink), 0.8);
+  }
+
+  .contact__president-email {
+    margin-top: 0.25rem;
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-primary-600);
+  }
+
+  .contact__president-email:hover {
+    color: var(--color-primary-700);
+  }
+</style>

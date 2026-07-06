@@ -1,0 +1,95 @@
+---
+import { sponsorLogos, hero } from "../data/content";
+
+const loop = [...sponsorLogos, ...sponsorLogos];
+---
+
+<div class="marquee">
+  <p class="marquee__label">
+    {hero.patrociniLabel}
+  </p>
+  <div class="marquee__viewport">
+    <div class="marquee-track marquee__track">
+      {
+        loop.map((logo) => (
+          <div class="marquee__logo">
+            <img src={logo.src} alt={logo.alt} loading="lazy" />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  .marquee {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .marquee__label {
+    margin-bottom: 1.25rem;
+    text-align: center;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: rgba(var(--rgb-white), 0.6);
+  }
+
+  @media (min-width: 640px) {
+    .marquee__label {
+      font-size: 0.75rem;
+    }
+  }
+
+  .marquee__viewport {
+    position: relative;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .marquee__track {
+      gap: 3.5rem;
+    }
+  }
+
+  .marquee__logo {
+    display: flex;
+    flex-shrink: 0;
+    height: 3rem;
+    width: 7rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background-color: white;
+    padding: 0.5rem 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .marquee__logo {
+      height: 3.5rem;
+      width: 8rem;
+    }
+  }
+
+  .marquee__logo img {
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    object-position: center;
+    margin: 0 auto;
+  }
+</style>

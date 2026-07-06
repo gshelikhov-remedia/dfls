@@ -1,0 +1,36 @@
+---
+import { venue } from "../data/content";
+import SectionHeading from "../components/SectionHeading.astro";
+import Gallery from "../components/Gallery.astro";
+---
+
+<section id="sede" class="venue">
+  <div class="venue__inner container">
+    <SectionHeading eyebrow={venue.heading} title={venue.name} />
+    <div class="venue__gallery">
+      <Gallery />
+    </div>
+  </div>
+</section>
+
+<style>
+  .venue {
+    position: relative;
+    background-color: var(--color-mist);
+    padding-block: 6rem;
+  }
+
+  @media (min-width: 640px) {
+    .venue {
+      padding-block: 8rem;
+    }
+  }
+
+  .venue__inner {
+    max-width: 72rem;
+  }
+
+  .venue__gallery {
+    margin-top: 3.5rem;
+  }
+</style>

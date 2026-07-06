@@ -1,0 +1,195 @@
+---
+import { contact, tiers } from "../data/content";
+---
+
+<form id="contact-form" action={contact.formEndpoint} method="POST" class="contact-form reveal-up">
+  <div class="contact-form__row">
+    <div class="contact-form__field">
+      <label for="name">Nome e cognome</label>
+      <input id="name" name="name" type="text" required />
+    </div>
+    <div class="contact-form__field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required />
+    </div>
+  </div>
+
+  <div class="contact-form__row">
+    <div class="contact-form__field">
+      <label for="company">Azienda / Ente</label>
+      <input id="company" name="company" type="text" />
+    </div>
+    <div class="contact-form__field">
+      <label for="tier">Pacchetto di interesse</label>
+      <select id="tier" name="tier">
+        <option value="">Da definire</option>
+        {tiers.map((tier) => <option value={tier.name}>{tier.name} — {tier.price}</option>)}
+      </select>
+    </div>
+  </div>
+
+  <div class="contact-form__field">
+    <label for="message">Messaggio</label>
+    <textarea id="message" name="message" rows="4"></textarea>
+  </div>
+
+  <button type="submit" class="contact-form__submit"> Invia richiesta </button>
+
+  <p id="form-status" class="contact-form__status is-hidden" role="status"></p>
+</form>
+
+<style>
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    border-radius: 1.5rem;
+    background-color: white;
+    padding: 1.5rem;
+    box-shadow: 0 20px 25px rgba(var(--rgb-ink), 0.05);
+  }
+
+  @media (min-width: 640px) {
+    .contact-form {
+      padding: 2rem;
+    }
+  }
+
+  .contact-form__row {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .contact-form__row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .contact-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .contact-form__field label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(var(--rgb-ink), 0.8);
+  }
+
+  .contact-form__field input,
+  .contact-form__field select,
+  .contact-form__field textarea {
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-primary-100);
+    background-color: var(--color-paper);
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-ink);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .contact-form__field textarea {
+    resize: none;
+  }
+
+  .contact-form__field input:focus,
+  .contact-form__field select:focus,
+  .contact-form__field textarea:focus {
+    border-color: var(--color-primary-500);
+    box-shadow: 0 0 0 3px rgba(var(--rgb-primary-100), 0.6);
+  }
+
+  .contact-form__submit {
+    margin-top: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background-color: var(--color-primary-600);
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+    transition: all 0.2s;
+  }
+
+  .contact-form__submit:hover {
+    transform: translateY(-2px);
+    background-color: var(--color-primary-700);
+  }
+
+  .contact-form__status {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .contact-form__status.is-hidden {
+    display: none;
+  }
+
+  .contact-form__status.is-success {
+    color: var(--color-primary-700);
+  }
+
+  .contact-form__status.is-info {
+    color: var(--color-sky-600);
+  }
+
+  .contact-form__status.is-error {
+    color: #dc2626;
+  }
+</style>
+
+<script>
+  const form = document.getElementById("contact-form") as HTMLFormElement | null;
+  const status = document.getElementById("form-status") as HTMLParagraphElement | null;
+  const tierSelect = document.getElementById("tier") as HTMLSelectElement | null;
+
+  // Pre-fill tier when a "Richiedi informazioni" CTA is clicked
+  document.querySelectorAll<HTMLAnchorElement>("[data-tier]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const value = btn.dataset.tier;
+      if (tierSelect && value) {
+        Array.from(tierSelect.options).forEach((opt) => {
+          if (opt.value === value) tierSelect.value = value;
+        });
+      }
+    });
+  });
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!form || !status) return;
+    const endpoint = form.getAttribute("action") || "";
+    if (endpoint.includes("REPLACE_WITH_FORM_ID")) {
+      status.textContent =
+        "Modulo non ancora collegato: contattaci nel frattempo via email a " +
+        "donnefralestelle@gmail.com.";
+      status.classList.remove("is-hidden", "is-success", "is-error");
+      status.classList.add("is-info");
+      return;
+    }
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+      if (res.ok) {
+        status.textContent = "Grazie! La tua richiesta è stata inviata con successo.";
+        status.classList.remove("is-hidden", "is-info", "is-error");
+        status.classList.add("is-success");
+        form.reset();
+      } else {
+        throw new Error("submit failed");
+      }
+    } catch {
+      status.textContent = "Si è verificato un errore. Riprova o scrivici direttamente via email.";
+      status.classList.remove("is-hidden", "is-info", "is-success");
+      status.classList.add("is-error");
+    }
+  });
+</script>

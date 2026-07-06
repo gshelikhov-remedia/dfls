@@ -1,0 +1,103 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import Hero from "../sections/Hero.astro";
+import Festival from "../sections/Festival.astro";
+import WhySponsor from "../sections/WhySponsor.astro";
+import Sponsorship from "../sections/Sponsorship.astro";
+import Venue from "../sections/Venue.astro";
+import Publication from "../sections/Publication.astro";
+import Contact from "../sections/Contact.astro";
+---
+
+<BaseLayout>
+  <Navbar />
+  <main>
+    <Hero />
+    <Festival />
+    <WhySponsor />
+    <Sponsorship />
+    <Venue />
+    <Publication />
+    <Contact />
+  </main>
+  <Footer />
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!reduceMotion) {
+      // Hero entrance
+      const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      heroTl
+        .from("#hero-eyebrow", { y: 16, opacity: 0, duration: 0.6 })
+        .from("#hero-title", { y: 26, opacity: 0, duration: 0.8 }, "-=0.35")
+        .from("#hero-tagline", { y: 20, opacity: 0, duration: 0.7 }, "-=0.45")
+        .from("#hero-meta", { y: 16, opacity: 0, duration: 0.6 }, "-=0.4")
+        .from("#hero-ctas", { y: 16, opacity: 0, duration: 0.6 }, "-=0.35");
+
+      // Subtle parallax on hero background
+      gsap.to("#top img", {
+        yPercent: 12,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#top",
+          start: "top top",
+          end: "bottom top",
+        },
+      });
+
+      // Generic reveal-up for any element flagged with the class
+      const revealEls = gsap.utils.toArray(".reveal-up");
+      revealEls.forEach((el) => {
+        gsap.fromTo(
+          el,
+          { y: 32, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.1,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+
+      // Vantaggi cards: one ScrollTrigger on the grid, cards stagger in
+      // together instead of animating row by row.
+      const vantaggiGrid = document.querySelector<HTMLElement>("#perche-sponsorizzare");
+      if (vantaggiGrid) {
+        const cards = gsap.utils.toArray<HTMLElement>(".vantaggi-card", vantaggiGrid);
+        gsap.fromTo(
+          cards,
+          { y: 32, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            ease: "power3.out",
+            stagger: { each: 0.1, from: "start" },
+            scrollTrigger: {
+              trigger: vantaggiGrid,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+    } else {
+      gsap.set(".reveal-up, .vantaggi-card", { opacity: 1, y: 0 });
+    }
+  </script>
+</BaseLayout>
