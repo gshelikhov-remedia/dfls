@@ -1,0 +1,166 @@
+﻿Diagnose log at 2026-07-06T15:56:43Z
+
+AppPath: /usr/local/bin/git-credential-manager
+InstallDir: /usr/local/share/gcm-core/
+Version: 2.8.0+d5e8a3442d48cc5efe7014e093e44242c0bd395f
+
+------------
+Diagnostic: Environment
+Skipped: False
+Success: True
+Exception: None
+Log:
+OSType: macOS
+OSVersion: 26.5.1
+Reading environment variables... OK
+ Variables:
+LOGNAME=georgyshelikhov
+HOMEBREW_PREFIX=/opt/homebrew
+COLORTERM=truecolor
+TERM_PROGRAM=vscode
+OSLogRateLimit=64
+HOMEBREW_REPOSITORY=/opt/homebrew
+TERM=xterm-256color
+GIT_TRACE2_PARENT_SID=9908c5b4-3d23-4cf8-93ab-47dbdb6247cc
+HOMEBREW_CELLAR=/opt/homebrew/Cellar
+VSCODE_GIT_IPC_HANDLE=/var/folders/fy/m6rd_1_s3qx60p88y4vdt1bh0000gn/T/vscode-git-aa8b54548b.sock
+SHELL=/bin/zsh
+ZDOTDIR=/Users/georgyshelikhov
+CPATH=/usr/local/include
+GIT_EXEC_PATH=/Library/Developer/CommandLineTools/usr/libexec/git-core
+VSCODE_GIT_ASKPASS_EXTRA_ARGS=
+USER_ZDOTDIR=/Users/georgyshelikhov
+SSH_AUTH_SOCK=/var/run/com.apple.launchd.cAVyr9M5VQ/Listeners
+LANG=C.UTF-8
+PATH=/Library/Developer/CommandLineTools/usr/libexec/git-core:/Users/georgyshelikhov/.local/bin:/Users/georgyshelikhov/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/georgyshelikhov/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Users/georgyshelikhov/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/georgyshelikhov/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/Users/georgyshelikhov/.local/bin
+__CFBundleIdentifier=com.microsoft.VSCode
+VSCODE_GIT_ASKPASS_MAIN=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js
+VSCODE_PROFILE_INITIALIZED=1
+USER=georgyshelikhov
+XPC_FLAGS=0x0
+PWD=/Users/georgyshelikhov/Documents/Claude/Projects/Donne fra le stelle/site
+VSCODE_INJECTION=1
+HOME=/Users/georgyshelikhov
+SHLVL=1
+FPATH=/opt/homebrew/share/zsh/site-functions:/opt/homebrew/share/zsh/site-functions:/usr/local/share/zsh/site-functions:/usr/share/zsh/site-functions:/usr/share/zsh/5.9/functions
+OLDPWD=/Users/georgyshelikhov/Documents/Claude/Projects/Donne fra le stelle/site
+COMMAND_MODE=unix2003
+LIBRARY_PATH=/usr/local/lib
+MANPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/share/man:/Library/Developer/CommandLineTools/usr/share/man:/Library/Developer/CommandLineTools/Toolchains/XcodeDefault.xctoolchain/usr/share/man:
+MallocNanoZone=0
+VSCODE_PYTHON_AUTOACTIVATE_GUARD=1
+LaunchInstanceID=BDB476F3-1606-4B5B-803B-AABEDBD65685
+XPC_SERVICE_NAME=0
+TERM_PROGRAM_VERSION=1.127.0
+_=/usr/bin/git
+SECURITYSESSIONID=186b8
+VSCODE_GIT_ASKPASS_NODE=/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Plugin).app/Contents/MacOS/Code Helper (Plugin)
+GIT_ASKPASS=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh
+__CF_USER_TEXT_ENCODING=0x1F5:0x0:0x0
+COPILOT_DEBUG_NONCE=51a296814848c31ab4009401982c63f7
+INFOPATH=/opt/homebrew/share/info:/opt/homebrew/share/info:
+TMPDIR=/var/folders/fy/m6rd_1_s3qx60p88y4vdt1bh0000gn/T/
+SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+
+
+------------
+Diagnostic: File system
+Skipped: False
+Success: True
+Exception: None
+Log:
+Temporary directory is '/var/folders/fy/m6rd_1_s3qx60p88y4vdt1bh0000gn/T/'...
+Checking basic file I/O...
+Writing to temporary file '/var/folders/fy/m6rd_1_s3qx60p88y4vdt1bh0000gn/T/81ed4c6e85f19d0d77e301b9'... OK
+Reading from temporary file '/var/folders/fy/m6rd_1_s3qx60p88y4vdt1bh0000gn/T/81ed4c6e85f19d0d77e301b9'... OK
+Deleting temporary file '/var/folders/fy/m6rd_1_s3qx60p88y4vdt1bh0000gn/T/81ed4c6e85f19d0d77e301b9'... OK
+Testing IFileSystem instance...
+UserHomePath: /Users/georgyshelikhov
+UserDataDirectoryPath: /Users/georgyshelikhov/.gcm
+GetCurrentDirectory(): /Users/georgyshelikhov/Documents/Claude/Projects/Donne fra le stelle/site
+
+------------
+Diagnostic: Networking
+Skipped: False
+Success: True
+Exception: None
+Log:
+Checking networking and HTTP stack...
+Creating HTTP client... OK
+IsNetworkAvailable: True
+Sending HEAD request to http://example.com... OK
+Sending HEAD request to https://example.com... OK
+Acquiring free TCP port... OK
+Testing local HTTP loopback connections...
+Creating new HTTP listener for http://localhost:61891/... OK
+Waiting for loopback connection... OK
+Writing response... OK
+Waiting for response data... OK
+Loopback connection data OK
+
+------------
+Diagnostic: Git
+Skipped: False
+Success: True
+Exception: None
+Log:
+Getting Git version... OK
+Git version is '2.50.1 (Apple Git-155)'
+Locating current repository...Git repository at '/Users/georgyshelikhov/Documents/Claude/Projects/Donne fra le stelle/site/.git'
+ OK
+Listing all Git configuration... OK
+Git configuration:
+file:/Library/Developer/CommandLineTools/usr/share/git-core/gitconfig	credential.helper=osxkeychain
+file:/Library/Developer/CommandLineTools/usr/share/git-core/gitconfig	init.defaultbranch=main
+file:/Users/georgyshelikhov/.gitconfig	user.email=gshelikhov@remediagroup.it
+file:/Users/georgyshelikhov/.gitconfig	user.name=gshelikhov-remedia
+file:/Users/georgyshelikhov/.gitconfig	credential.helper=
+file:/Users/georgyshelikhov/.gitconfig	credential.helper=/usr/local/share/gcm-core/git-credential-manager
+file:/Users/georgyshelikhov/.gitconfig	credential.https://dev.azure.com.usehttppath=true
+file:.git/config	core.repositoryformatversion=0
+file:.git/config	core.filemode=true
+file:.git/config	core.bare=false
+file:.git/config	core.logallrefupdates=true
+file:.git/config	core.ignorecase=true
+file:.git/config	core.precomposeunicode=true
+file:.git/config	remote.origin.url=https://gshelikhov-remedia@github.com/gshelikhov-remedia/dfls.git
+file:.git/config	remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+
+
+------------
+Diagnostic: Credential storage
+Skipped: False
+Success: True
+Exception: None
+Log:
+ICredentialStore instance is of type: CredentialStore
+Writing test credential... OK
+Reading test credential... OK
+Deleting test credential... OK
+
+------------
+Diagnostic: Microsoft authentication (AAD/MSA)
+Skipped: False
+Success: True
+Exception: None
+Log:
+Broker is not enabled.
+Flow type is: Auto
+Gathering MSAL token cache data... OK
+CacheDirectory: /Users/georgyshelikhov/.local/.IdentityService
+CacheFileName: msal.cache
+CacheFilePath: /Users/georgyshelikhov/.local/.IdentityService/msal.cache
+MacKeyChainAccountName: MSALCache
+MacKeyChainServiceName: Microsoft.Developer.IdentityService
+Creating cache helper... OK
+Verifying MSAL token cache persistence... OK
+
+------------
+Diagnostic: GitHub API
+Skipped: False
+Success: True
+Exception: None
+Log:
+Using 'https://github.com/' as API target.
+Querying '/meta' endpoint... OK
+
