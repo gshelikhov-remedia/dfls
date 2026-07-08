@@ -46,8 +46,7 @@
   --color-sky-500: #7080a7;
   --color-sky-600: #5e6696;
 
-  /* Paper / light sections */
-  --color-paper: #F0F0F0;
+  /* Mist / light sections */
   --color-mist: #f3f3f7;
 
   --shadow-glow: 0 0 60px rgba(137, 165, 192, 0.25);
@@ -59,7 +58,7 @@
   --rgb-primary-100: 224, 222, 233;
   --rgb-primary-50: 239, 239, 244;
   --rgb-primary-600: 59, 50, 115;
-  --rgb-paper: 240, 240, 240;
+  --rgb-mist: 243, 243, 247;
   --rgb-sky-300: 170, 190, 210;
   --rgb-sky-400: 137, 165, 192;
   --rgb-sky-500: 112, 128, 167;
@@ -94,12 +93,11 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-paper);
+  background-color: var(--color-mist);
   color: var(--color-primary-600);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;

@@ -1,0 +1,132 @@
+---
+import { sponsorLogos } from "../data/content";
+import SectionHeading from "../components/SectionHeading.astro";
+---
+
+<section id="sponsor" class="sponsors">
+  <div class="sponsors__inner container">
+    <SectionHeading eyebrow="Grazie a chi ci sostiene" title="Sponsor" />
+
+    <div class="sponsors__grid">
+      {
+        sponsorLogos.map((logo) => (
+          <div class="sponsor-card" tabindex="0">
+            <img src={logo.src} alt={logo.alt} loading="lazy" />
+            <span class="sponsor-card__tooltip" aria-hidden="true">Visita sito web</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .sponsors {
+    position: relative;
+    background-color: var(--color-mist);
+    padding-block: 6rem;
+  }
+
+  @media (min-width: 640px) {
+    .sponsors {
+      padding-block: 8rem;
+    }
+  }
+
+  .sponsors__inner {
+    max-width: 80rem;
+  }
+
+  .sponsors__grid {
+    margin-top: 3.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .sponsors__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .sponsors__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .sponsors__grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+  }
+
+  .sponsor-card {
+    position: relative;
+    display: flex;
+    height: 5.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background-color: white;
+    padding: 0.625rem 0.875rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .sponsor-card:hover,
+  .sponsor-card:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(var(--rgb-black), 0.1);
+    outline: none;
+  }
+
+  .sponsor-card img {
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    object-position: center;
+    margin: 0 auto;
+  }
+
+  .sponsor-card__tooltip {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 50%;
+    z-index: 10;
+    transform: translate(-50%, 0.25rem);
+    white-space: nowrap;
+    border-radius: 0.375rem;
+    background-color: var(--color-deep);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: white;
+    box-shadow: 0 4px 10px rgba(var(--rgb-black), 0.15);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+
+  .sponsor-card__tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--color-deep);
+  }
+
+  .sponsor-card:hover .sponsor-card__tooltip,
+  .sponsor-card:focus-visible .sponsor-card__tooltip {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+</style>

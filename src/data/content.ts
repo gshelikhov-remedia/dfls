@@ -9,7 +9,7 @@ export const site = {
 };
 
 export const nav = [
-  { label: "Il Festival", href: "#festival" },
+  { label: "Chi Siamo", href: "#festival" },
   { label: "Perché Sponsorizzare", href: "#perche-sponsorizzare" },
   { label: "Pacchetti Sponsor", href: "#pacchetti" },
   { label: "La Sede", href: "#sede" },

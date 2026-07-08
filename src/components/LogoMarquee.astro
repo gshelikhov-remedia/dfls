@@ -19,6 +19,13 @@ const loop = [...sponsorLogos, ...sponsorLogos];
       }
     </div>
   </div>
+
+  <a href="#sponsor" class="marquee__cta">
+    Scopri tutti gli sponsor
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l-6-6m6 6l6-6" />
+    </svg>
+  </a>
 </div>
 
 <style>
@@ -92,5 +99,36 @@ const loop = [...sponsorLogos, ...sponsorLogos];
     object-fit: contain;
     object-position: center;
     margin: 0 auto;
+  }
+
+  .marquee__cta {
+    margin: 1.5rem auto 0;
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(var(--rgb-white), 0.7);
+    transition: color 0.2s;
+  }
+
+  .marquee__cta:hover,
+  .marquee__cta:focus-visible {
+    color: var(--color-sky-300);
+  }
+
+  .marquee__cta svg {
+    height: 0.875rem;
+    width: 0.875rem;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+
+  .marquee__cta:hover svg,
+  .marquee__cta:focus-visible svg {
+    transform: translateY(2px);
   }
 </style>

@@ -2,7 +2,6 @@
 import { hero } from "../data/content";
 import Button from "../components/Button.astro";
 import LogoMarquee from "../components/LogoMarquee.astro";
-import StarIcon from "../components/StarIcon.astro";
 ---
 
 <section id="top" class="hero">
@@ -21,10 +20,9 @@ import StarIcon from "../components/StarIcon.astro";
   </div>
 
   <div class="hero__content container">
-    <span id="hero-eyebrow" class="hero__eyebrow">
-      <StarIcon size="0.875rem" />
+    <p id="hero-eyebrow" class="hero__kicker">
       {hero.eyebrow}
-    </span>
+    </p>
 
     <h1 id="hero-title" class="hero__title text-balance">
       <span class="hero__title-main">{hero.title}</span>
@@ -39,8 +37,7 @@ import StarIcon from "../components/StarIcon.astro";
     </p>
 
     <div id="hero-ctas" class="hero__ctas">
-      <Button href={hero.ctaPrimary.href} variant="primary">{hero.ctaPrimary.label}</Button>
-      <Button href={hero.ctaSecondary.href} variant="outline">{hero.ctaSecondary.label}</Button>
+      <Button href={hero.ctaSecondary.href} variant="primary">{hero.ctaSecondary.label}</Button>
     </div>
   </div>
 
@@ -113,22 +110,18 @@ import StarIcon from "../components/StarIcon.astro";
     text-align: center;
   }
 
-  .hero__eyebrow {
-    margin-bottom: 1.5rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    border-radius: 9999px;
-    border: 1px solid rgba(var(--rgb-sky-400), 0.4);
-    background-color: rgba(var(--rgb-white), 0.05);
-    padding: 0.375rem 1rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
+  .hero__kicker {
+    margin-bottom: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-style: italic;
     color: var(--color-sky-300);
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
+  }
+
+  @media (min-width: 640px) {
+    .hero__kicker {
+      font-size: 1.875rem;
+    }
   }
 
   .hero__title {

@@ -1,0 +1,42 @@
+---
+import ComparisonTable from "../components/ComparisonTable.astro";
+---
+
+<section id="tabella-comparativa" class="comparison">
+  <div class="comparison__inner container">
+    <h3 class="comparison__title reveal-up">Tabella comparativa</h3>
+    <ComparisonTable />
+  </div>
+</section>
+
+<style>
+  .comparison {
+    position: relative;
+    background-color: var(--color-mist);
+    padding-block: 6rem;
+  }
+
+  @media (min-width: 640px) {
+    .comparison {
+      padding-block: 8rem;
+    }
+  }
+
+  .comparison__inner {
+    max-width: 80rem;
+  }
+
+  .comparison__title {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-primary-600);
+  }
+
+  @media (min-width: 640px) {
+    .comparison__title {
+      font-size: 1.875rem;
+    }
+  }
+</style>

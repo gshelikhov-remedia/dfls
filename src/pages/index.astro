@@ -6,6 +6,8 @@ import Hero from "../sections/Hero.astro";
 import Festival from "../sections/Festival.astro";
 import WhySponsor from "../sections/WhySponsor.astro";
 import Sponsorship from "../sections/Sponsorship.astro";
+import Sponsors from "../sections/Sponsors.astro";
+import ComparisonSection from "../sections/ComparisonSection.astro";
 import Venue from "../sections/Venue.astro";
 import PreviousEditions from "../sections/PreviousEditions.astro";
 import Publication from "../sections/Publication.astro";
@@ -19,6 +21,8 @@ import Contact from "../sections/Contact.astro";
     <Festival />
     <WhySponsor />
     <Sponsorship />
+    <Sponsors />
+    <ComparisonSection />
     <Venue />
     <PreviousEditions />
     <Publication />
@@ -98,8 +102,30 @@ import Contact from "../sections/Contact.astro";
           }
         );
       }
+      // Sponsor logo grid: same one-ScrollTrigger stagger treatment as
+      // the vantaggi cards, so the whole grid animates in together.
+      const sponsorsGrid = document.querySelector<HTMLElement>("#sponsor");
+      if (sponsorsGrid) {
+        const cards = gsap.utils.toArray<HTMLElement>(".sponsor-card", sponsorsGrid);
+        gsap.fromTo(
+          cards,
+          { y: 24, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            ease: "power3.out",
+            stagger: { each: 0.04, from: "start" },
+            scrollTrigger: {
+              trigger: sponsorsGrid,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
     } else {
-      gsap.set(".reveal-up, .vantaggi-card", { opacity: 1, y: 0 });
+      gsap.set(".reveal-up, .vantaggi-card, .sponsor-card", { opacity: 1, y: 0 });
     }
   </script>
 </BaseLayout>
