@@ -7,6 +7,7 @@ import Festival from "../sections/Festival.astro";
 import WhySponsor from "../sections/WhySponsor.astro";
 import Sponsorship from "../sections/Sponsorship.astro";
 import Venue from "../sections/Venue.astro";
+import PreviousEditions from "../sections/PreviousEditions.astro";
 import Publication from "../sections/Publication.astro";
 import Contact from "../sections/Contact.astro";
 ---
@@ -19,6 +20,7 @@ import Contact from "../sections/Contact.astro";
     <WhySponsor />
     <Sponsorship />
     <Venue />
+    <PreviousEditions />
     <Publication />
     <Contact />
   </main>
@@ -43,7 +45,7 @@ import Contact from "../sections/Contact.astro";
         .from("#hero-ctas", { y: 16, opacity: 0, duration: 0.6 }, "-=0.35");
 
       // Subtle parallax on hero background
-      gsap.to("#top img", {
+      gsap.to(".hero__video", {
         yPercent: 12,
         ease: "none",
         scrollTrigger: {

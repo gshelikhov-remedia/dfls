@@ -5,8 +5,7 @@
 @import "@fontsource/poppins/600.css";
 @import "@fontsource/poppins/700.css";
 
-/* Titles: Playfair Display (variable font, self-hosted from Google Fonts).
-   Self-hosted so no request ever goes to a third-party server (GDPR). */
+/* Titles */
 @font-face {
   font-family: "Playfair Display";
   src: url("/fonts/PlayfairDisplay-VariableFont_wght.ttf") format("truetype-variations");
@@ -101,7 +100,7 @@ html {
 body {
   font-family: var(--font-sans);
   background-color: var(--color-paper);
-  color: var(--color-ink);
+  color: var(--color-primary-600);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -221,7 +220,7 @@ table {
   to { transform: translateX(-50%); }
 }
 .marquee-track {
-  animation: marquee-scroll 70s linear infinite;
+  animation: marquee-scroll 90s linear infinite;
 }
 .marquee-track:hover {
   animation-play-state: paused;

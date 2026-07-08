@@ -1,0 +1,711 @@
+---
+import { previousEditions, previousEditionsHeading } from "../data/content";
+import SectionHeading from "../components/SectionHeading.astro";
+import StarIcon from "../components/StarIcon.astro";
+---
+
+<section id="edizioni-precedenti" class="editions">
+  <div class="editions__inner container">
+    <SectionHeading eyebrow={previousEditionsHeading.eyebrow} title={previousEditionsHeading.title} />
+    <p class="editions__lead reveal-up text-balance">{previousEditionsHeading.intro}</p>
+
+    <div data-editions-wrap data-autoplay="false" class="editions-slider reveal-up">
+      <div class="editions-slider__jump" data-editions-jump role="tablist" aria-label="Seleziona edizione">
+        {
+          previousEditions.map((edition, i) => (
+            <button
+              type="button"
+              data-goto={i}
+              class={`editions-slider__jump-btn ${i === 0 ? "is-active" : ""}`}
+              aria-label={`Vai alla ${edition.number}`}
+              aria-selected={i === 0 ? "true" : "false"}
+              role="tab"
+            >
+              {i + 1}
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="editions-slider__collection">
+        <div role="list" data-editions-list class="editions-slider__list">
+          {
+            previousEditions.map((edition, i) => (
+              <article
+                aria-hidden={i === 0 ? "false" : "true"}
+                data-editions-item
+                role="listitem"
+                class={`editions-slider__item ${i === 0 ? "is-active" : ""}`}
+              >
+                <div class="editions-slider__header">
+                  <span class="editions-slider__badge">
+                    <StarIcon size="0.7rem" />
+                    {edition.number}
+                  </span>
+                  <h3 data-editions-text class="editions-slider__title">
+                    {edition.year} — {edition.location}
+                  </h3>
+                </div>
+
+                <div data-editions-body class="editions-slider__body">
+                  <p class="editions-slider__intro">{edition.intro}</p>
+
+                  <div class="editions-slider__extra">
+                    <div class="editions-slider__speakers">
+                      <span class="editions-slider__label">Relatrici</span>
+                      <ul class="editions-slider__speaker-list">
+                        {edition.speakers.map((s) => (
+                          <li class="editions-slider__speaker">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" class="editions-slider__speaker-icon" aria-hidden="true">
+                              <path d="M80 259.8L289.2 345.9C299 349.9 309.4 352 320 352C330.6 352 341 349.9 350.8 345.9L593.2 246.1C602.2 242.4 608 233.7 608 224C608 214.3 602.2 205.6 593.2 201.9L350.8 102.1C341 98.1 330.6 96 320 96C309.4 96 299 98.1 289.2 102.1L46.8 201.9C37.8 205.6 32 214.3 32 224L32 520C32 533.3 42.7 544 56 544C69.3 544 80 533.3 80 520L80 259.8zM128 331.5L128 448C128 501 214 544 320 544C426 544 512 501 512 448L512 331.4L369.1 390.3C353.5 396.7 336.9 400 320 400C303.1 400 286.5 396.7 270.9 390.3L128 331.4z" />
+                            </svg>
+                            <div class="editions-slider__speaker-info">
+                              <strong>{s.name}</strong>
+                              <span>{s.role}</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {edition.notes && edition.notes.length > 0 && (
+                      <div class="editions-slider__notes">
+                        {edition.notes.map((note) => (
+                          <p>{note}</p>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div class="editions-slider__footer">
+                    <span class="editions-slider__label">{edition.moderators.length > 1 ? "Moderazione" : "Moderato da"}</span>
+                    <p class="editions-slider__moderators">
+                      {edition.moderators.map((m, idx) => (
+                        <>
+                          <strong>{m.name}</strong>
+                          {m.role ? `, ${m.role}` : ""}
+                          {idx < edition.moderators.length - 1 ? " · " : ""}
+                        </>
+                      ))}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="editions-slider__controls">
+        <button data-prev type="button" aria-label="Edizione precedente" class="editions-slider__button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" fill="none" class="editions-slider__arrow">
+            <path
+              d="M5.26512 12L6.43721 10.7746L1.48837 5.28169V6.71831L6.45581 1.22535L5.28372 0L-2.21369e-07 6L5.26512 12ZM12 6.97183V5.02817H1.30232V6.97183H12Z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+        <button data-next type="button" aria-label="Edizione successiva" class="editions-slider__button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" fill="none" class="editions-slider__arrow">
+            <path
+              d="M6.73488 12L5.56279 10.7746L10.5116 5.28169V6.71831L5.54419 1.22535L6.71628 0L12 6L6.73488 12ZM0 6.97183V5.02817H10.6977V6.97183H0Z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .editions {
+    position: relative;
+    background-color: var(--color-paper);
+    padding-block: 6rem;
+  }
+
+  @media (min-width: 640px) {
+    .editions {
+      padding-block: 8rem;
+    }
+  }
+
+  .editions__inner {
+    position: relative;
+    max-width: 72rem;
+  }
+
+  .editions__lead {
+    max-width: 42rem;
+    margin: 1.25rem auto 0;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.625;
+    color: rgba(var(--rgb-primary-600), 0.7);
+  }
+
+  @media (min-width: 640px) {
+    .editions__lead {
+      font-size: 1.125rem;
+    }
+  }
+
+  /* ---------- Slider shell ---------- */
+
+  .editions-slider {
+    position: relative;
+    margin-top: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .editions-slider__jump {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .editions-slider__jump-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-primary-100);
+    color: rgba(var(--rgb-primary-600), 0.5);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    transition: all 0.25s;
+  }
+
+  .editions-slider__jump-btn:hover {
+    border-color: var(--color-sky-400);
+    color: var(--color-primary-600);
+  }
+
+  .editions-slider__jump-btn.is-active {
+    background-color: var(--color-sky-400);
+    border-color: var(--color-sky-400);
+    color: var(--color-primary-600);
+  }
+
+  .editions-slider__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .editions-slider__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-primary-100);
+    color: var(--color-primary-600);
+    transition: all 0.25s;
+  }
+
+  .editions-slider__button:hover {
+    background-color: var(--color-primary-50);
+    border-color: var(--color-sky-400);
+  }
+
+  .editions-slider__arrow {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  /* ---------- Card stack (cross-fade) ---------- */
+
+  .editions-slider__collection {
+    width: 100%;
+  }
+
+  .editions-slider__list {
+    position: relative;
+    width: 100%;
+    /* Height is set in JS to match the active slide's natural content
+       height, and animated on transition — this keeps every edition's
+       full text visible instead of clipping the short ones to the
+       tallest slide's height. The min-height below is just a fallback
+       so nothing collapses before that JS runs (or if it never runs). */
+    min-height: 30rem;
+  }
+
+  .editions-slider__item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    padding: 1.75rem;
+    border-radius: 1.25rem;
+    border: 1px solid var(--color-primary-100);
+    background: white;
+    box-shadow: 0 20px 25px rgba(var(--rgb-ink), 0.05);
+    opacity: 0;
+    visibility: hidden;
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 640px) {
+    .editions-slider__item {
+      padding: 2.5rem;
+    }
+  }
+
+  .editions-slider__item.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .editions-slider__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .editions-slider__badge {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 9999px;
+    background-color: var(--color-primary-50);
+    padding: 0.3rem 0.8rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-primary-600);
+  }
+
+  .editions-slider__title {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--color-primary-600);
+  }
+
+  @media (min-width: 640px) {
+    .editions-slider__title {
+      font-size: 2.25rem;
+    }
+  }
+
+  .editions-slider__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .editions-slider__intro {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: rgba(var(--rgb-primary-600), 0.75);
+  }
+
+  @media (min-width: 640px) {
+    .editions-slider__intro {
+      font-size: 1rem;
+    }
+  }
+
+  .editions-slider__label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-sky-600);
+  }
+
+  .editions-slider__extra {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .editions-slider__speaker-list {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .editions-slider__speaker-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.875rem 1.25rem;
+    }
+  }
+
+  .editions-slider__speaker {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .editions-slider__speaker-icon {
+    flex-shrink: 0;
+    width: 0.9rem;
+    height: 0.9rem;
+    margin-top: 0.2rem;
+    color: var(--color-sky-500);
+  }
+
+  .editions-slider__speaker-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .editions-slider__speaker strong {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-primary-600);
+  }
+
+  .editions-slider__speaker span {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: rgba(var(--rgb-primary-600), 0.6);
+  }
+
+  /* Styled like the pull-quote in the Festival section: a left rule and
+     italic serif text, no background box. */
+  .editions-slider__notes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    border-left: 4px solid var(--color-sky-500);
+    padding-left: 1.25rem;
+  }
+
+  .editions-slider__notes p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.625;
+    color: var(--color-primary-600);
+  }
+
+  @media (min-width: 640px) {
+    .editions-slider__notes p {
+      font-size: 1.125rem;
+    }
+  }
+
+  .editions-slider__footer {
+    border-top: 1px solid var(--color-primary-100);
+    padding-top: 1.25rem;
+  }
+
+  .editions-slider__moderators {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgba(var(--rgb-primary-600), 0.75);
+  }
+
+  .editions-slider__moderators strong {
+    color: var(--color-primary-600);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { SplitText } from "gsap/SplitText";
+
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+
+  function initEditionsSlider() {
+    const wrap = document.querySelector<HTMLElement>("[data-editions-wrap]");
+    if (!wrap) return;
+
+    const list = wrap.querySelector<HTMLElement>("[data-editions-list]");
+    if (!list) return;
+
+    const items = Array.from(list.querySelectorAll<HTMLElement>("[data-editions-item]"));
+    if (!items.length) return;
+
+    const btnPrev = wrap.querySelector<HTMLButtonElement>("[data-prev]");
+    const btnNext = wrap.querySelector<HTMLButtonElement>("[data-next]");
+    const jumpBtns = Array.from(wrap.querySelectorAll<HTMLButtonElement>("[data-goto]"));
+
+    let activeIndex = items.findIndex((el) => el.classList.contains("is-active"));
+    if (activeIndex < 0) activeIndex = 0;
+
+    let isAnimating = false;
+    let reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const autoplayEnabled = wrap.getAttribute("data-autoplay") === "true";
+    const autoplayDuration = parseInt(wrap.getAttribute("data-autoplay-duration") || "", 10) || 9000;
+
+    let autoplayCall: gsap.core.Tween | null = null;
+    let isInView = true;
+
+    type Slide = {
+      item: HTMLElement;
+      titleEl: HTMLElement | null;
+      bodyEl: HTMLElement | null;
+      split: SplitText | null;
+    };
+
+    const slides: Slide[] = items.map((item) => ({
+      item,
+      titleEl: item.querySelector<HTMLElement>("[data-editions-text]"),
+      bodyEl: item.querySelector<HTMLElement>("[data-editions-body]"),
+      split: null,
+    }));
+
+    // The stack uses position:absolute items, so the list itself needs an
+    // explicit height matching whichever slide is active — otherwise it
+    // collapses to 0 and every slide's content gets clipped by the parent.
+    function setListHeight(index: number, animate: boolean) {
+      const height = slides[index].item.offsetHeight;
+      if (animate) {
+        gsap.to(list, { height, duration: 0.6, ease: "power2.inOut" });
+      } else {
+        gsap.set(list, { height });
+      }
+    }
+
+    function setSlideState(index: number, isActive: boolean) {
+      const slide = slides[index];
+      slide.item.classList.toggle("is-active", isActive);
+      slide.item.setAttribute("aria-hidden", String(!isActive));
+      gsap.set(slide.item, {
+        autoAlpha: isActive ? 1 : 0,
+        pointerEvents: isActive ? "auto" : "none",
+      });
+    }
+
+    function updateJumpButtons() {
+      jumpBtns.forEach((btn, i) => {
+        const isActive = i === activeIndex;
+        btn.classList.toggle("is-active", isActive);
+        btn.setAttribute("aria-selected", String(isActive));
+      });
+    }
+
+    function startAutoplay() {
+      if (!autoplayEnabled) return;
+      if (autoplayCall) autoplayCall.kill();
+
+      autoplayCall = gsap.delayedCall(autoplayDuration / 1000, () => {
+        if (!isInView || isAnimating) {
+          startAutoplay();
+          return;
+        }
+        goTo((activeIndex + 1) % slides.length);
+        startAutoplay();
+      });
+    }
+
+    function pauseAutoplay() {
+      autoplayCall?.pause();
+    }
+
+    function resumeAutoplay() {
+      if (!autoplayEnabled) return;
+      if (!autoplayCall) startAutoplay();
+      else autoplayCall.resume();
+    }
+
+    function resetAutoplay() {
+      if (!autoplayEnabled) return;
+      startAutoplay();
+    }
+
+    // Initial state
+    slides.forEach((_, i) => setSlideState(i, i === activeIndex));
+    updateJumpButtons();
+    setListHeight(activeIndex, false);
+    // Playfair Display can shift line-wrapping slightly once it finishes
+    // loading, so re-measure once fonts are ready to avoid a stale height.
+    document.fonts?.ready?.then(() => {
+      if (!isAnimating) setListHeight(activeIndex, false);
+    });
+
+    gsap.matchMedia().add({ reduce: "(prefers-reduced-motion: reduce)" }, (context) => {
+      reduceMotion = (context.conditions as { reduce: boolean }).reduce;
+    });
+
+    slides.forEach((slide, slideIndex) => {
+      if (!slide.titleEl) return;
+      slide.split = SplitText.create(slide.titleEl, {
+        type: "lines",
+        mask: "lines",
+        linesClass: "text-line",
+        autoSplit: true,
+        onSplit(self) {
+          if (reduceMotion) return;
+          const isActive = slideIndex === activeIndex;
+          gsap.set(self.lines, { yPercent: isActive ? 0 : 110 });
+          if (slide.bodyEl) {
+            gsap.set(slide.bodyEl, { autoAlpha: isActive ? 1 : 0, y: isActive ? 0 : 16 });
+          }
+        },
+      });
+    });
+
+    function goTo(nextIndex: number) {
+      if (isAnimating || nextIndex === activeIndex) return;
+      isAnimating = true;
+
+      const outgoing = slides[activeIndex];
+      const incoming = slides[nextIndex];
+
+      const finishIndex = nextIndex;
+      const tl = gsap.timeline({
+        onComplete: () => {
+          setSlideState(activeIndex, false);
+          setSlideState(finishIndex, true);
+          activeIndex = finishIndex;
+          updateJumpButtons();
+          isAnimating = false;
+        },
+      });
+
+      tl.to(list, { height: incoming.item.offsetHeight, duration: 0.6, ease: "power2.inOut" }, 0);
+
+      if (reduceMotion) {
+        tl.to(outgoing.item, { autoAlpha: 0, duration: 0.4, ease: "power2" }, 0).fromTo(
+          incoming.item,
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 0.4, ease: "power2" },
+          0
+        );
+        return;
+      }
+
+      const outgoingLines = outgoing.split?.lines ?? [];
+      const incomingLines = incoming.split?.lines ?? [];
+
+      gsap.set(incoming.item, { autoAlpha: 1, pointerEvents: "auto" });
+      gsap.set(incomingLines, { yPercent: 110 });
+      if (incoming.bodyEl) gsap.set(incoming.bodyEl, { autoAlpha: 0, y: 16 });
+
+      tl.to(
+        outgoingLines,
+        { yPercent: -110, duration: 0.55, ease: "power4.inOut", stagger: { amount: 0.15 } },
+        0
+      );
+
+      if (outgoing.bodyEl) {
+        tl.to(outgoing.bodyEl, { autoAlpha: 0, y: -12, duration: 0.4, ease: "power2.inOut" }, 0);
+      }
+
+      tl.to(
+        incomingLines,
+        { yPercent: 0, duration: 0.65, ease: "power4.inOut", stagger: { amount: 0.25 } },
+        ">-=0.3"
+      );
+
+      if (incoming.bodyEl) {
+        tl.fromTo(
+          incoming.bodyEl,
+          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" },
+          "<+=0.1"
+        );
+      }
+
+      tl.set(outgoing.item, { autoAlpha: 0 }, ">");
+    }
+
+    startAutoplay();
+
+    btnNext?.addEventListener("click", () => {
+      resetAutoplay();
+      goTo((activeIndex + 1) % slides.length);
+    });
+
+    btnPrev?.addEventListener("click", () => {
+      resetAutoplay();
+      goTo((activeIndex - 1 + slides.length) % slides.length);
+    });
+
+    jumpBtns.forEach((btn, i) => {
+      btn.addEventListener("click", () => {
+        resetAutoplay();
+        goTo(i);
+      });
+    });
+
+    function onKeyDown(e: KeyboardEvent) {
+      if (!isInView) return;
+      const target = e.target as HTMLElement | null;
+      const isTypingTarget =
+        !!target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable);
+      if (isTypingTarget) return;
+
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        resetAutoplay();
+        goTo((activeIndex + 1) % slides.length);
+      }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        resetAutoplay();
+        goTo((activeIndex - 1 + slides.length) % slides.length);
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+
+    // Re-measure on resize: the speaker grid switches from 1 to 2 columns
+    // at 640px, and title line-wraps change width, both of which alter
+    // the active slide's natural height.
+    let resizeRaf = 0;
+    window.addEventListener("resize", () => {
+      if (isAnimating) return;
+      cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => setListHeight(activeIndex, false));
+    });
+
+    ScrollTrigger.create({
+      trigger: wrap,
+      start: "top bottom",
+      end: "bottom top",
+      onEnter: () => {
+        isInView = true;
+        resumeAutoplay();
+      },
+      onEnterBack: () => {
+        isInView = true;
+        resumeAutoplay();
+      },
+      onLeave: () => {
+        isInView = false;
+        pauseAutoplay();
+      },
+      onLeaveBack: () => {
+        isInView = false;
+        pauseAutoplay();
+      },
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initEditionsSlider();
+  });
+</script>

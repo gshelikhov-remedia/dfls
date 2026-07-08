@@ -13,6 +13,7 @@ export const nav = [
   { label: "Perché Sponsorizzare", href: "#perche-sponsorizzare" },
   { label: "Pacchetti Sponsor", href: "#pacchetti" },
   { label: "La Sede", href: "#sede" },
+  { label: "Edizioni Precedenti", href: "#edizioni-precedenti" },
   { label: "Contatti", href: "#contatti" },
 ];
 
@@ -225,6 +226,136 @@ export const venue = {
     },
   ],
 };
+
+export type PreviousEditionSpeaker = { name: string; role: string };
+
+export type PreviousEdition = {
+  number: string;
+  year: string;
+  location: string;
+  intro: string;
+  speakers: PreviousEditionSpeaker[];
+  moderators: PreviousEditionSpeaker[];
+  notes?: string[];
+};
+
+export const previousEditionsHeading = {
+  eyebrow: "Il nostro percorso",
+  title: "Edizioni Precedenti",
+  intro:
+    "Quattro edizioni, due regioni, decine di scienziate, ingegnere e divulgatrici che hanno raccontato il contributo femminile alla scienza e allo spazio.",
+};
+
+export const previousEditions: PreviousEdition[] = [
+  {
+    number: "1ª edizione",
+    year: "2021",
+    location: "Fiumefreddo Bruzio, Calabria",
+    intro:
+      "Fin dalla prima edizione ha avuto il patrocinio dell'ESA, dell'ASI e del Comune di Amantea, e la partecipazione di autorevoli scienziate, ricercatrici, manager di industria e divulgatrici provenienti da tutta Italia, inaugurando un format innovativo di divulgazione al femminile.",
+    speakers: [
+      { name: "Carolyn Porco", role: "Scienziata planetaria, Università della California Berkeley" },
+      { name: "Amalia Ercoli Finzi", role: "Accademica, scienziata e ingegnere aerospaziale al Politecnico di Milano" },
+      { name: "Marica Branchesi", role: "Presidente del Consiglio scientifico dell'Istituto Nazionale di Astrofisica" },
+      { name: "Sandra Savaglio", role: "Prof.ssa di Astrofisica Unical e Assessore alla ricerca scientifica Regione Calabria" },
+      { name: "Annamaria Nassisi", role: "Manager Space Economy per Osservazione della Terra e Navigazione in Thales Alenia Space Italia" },
+      { name: "Paola Santini", role: "Astrofisica INAF" },
+      { name: "Alessia Gloder", role: "Socia Women in Aerospace Europe Rome Local Group" },
+    ],
+    moderators: [
+      { name: "Riccardo Mei", role: "Voce narrante di numerosi programmi Rai e di documentari" },
+    ],
+    notes: [
+      "Durante l'evento è stata conferita la cittadinanza onoraria alla Prof.ssa Carolyn Porco, originaria di Fiumefreddo, e la consegna di una targa alla redazione di Radio3 Scienza in memoria di Rossella Panarese, che con entusiasmo aveva sostenuto questa prima edizione.",
+    ],
+  },
+  {
+    number: "2ª edizione",
+    year: "2022",
+    location: "Amantea, Calabria",
+    intro:
+      "L'evento, patrocinato dal Comune di Amantea, dalla Provincia di Cosenza, dalla Regione Calabria, e da AISE – Associazione Italiana di Systems Engineering, ha ampliato la collaborazione con l'INGV e l'Università della Calabria, consolidando la rete di relazioni istituzionali e coinvolgendo il pubblico scolastico locale per una sensibilizzazione verso le materie STEM.",
+    speakers: [
+      { name: "Wera di Cianni", role: "Astronoma e astrofisica" },
+      { name: "Gioia Rau", role: "Astrofisica per il Goddard Space Flight Center della NASA" },
+      { name: "Patrizia Caraveo", role: "Dirigente di Ricerca all'Istituto Nazionale di Astrofisica (INAF)" },
+      { name: "Francesca Faedi", role: "Astrofisica e ricercatrice esopianeti" },
+      { name: "Annamaria Nassisi", role: "Manager Space Economy Osservazione e Navigazione in Thales Alenia Space" },
+      { name: "Giuseppina Nigro", role: "Astrofisica e ricercatrice post-doc presso l'Università della Calabria" },
+      { name: "Emanuela Di Fazio", role: "Membro AISE – Associazione Italiana di Systems Engineering" },
+      { name: "Claudia Agostinelli", role: "Membro AISE – Associazione Italiana di Systems Engineering" },
+    ],
+    moderators: [
+      { name: "Riccardo Mei", role: "Voce narrante di numerosi programmi Rai e di documentari" },
+    ],
+  },
+  {
+    number: "3ª edizione",
+    year: "2024",
+    location: "Abano Terme, Veneto",
+    intro:
+      "Realizzata con il patrocinio del Comune di Abano Terme e della Regione Veneto, e con la collaborazione della Specola di Padova e dell'INAF, ha rappresentato il debutto veneto dell'associazione. L'evento, dedicato a un pubblico generalista, ha coinvolto anche interessanti dibattiti su scienza e fede e sull'agricoltura, e ha avuto come sostenitori la Federalberghi Abano Montegrotto, Officina Stellare, Hotel Tritone, Hotel Plaza, e numerose realtà locali che hanno contribuito all'ospitalità delle relatrici e alla logistica dell'evento.",
+    speakers: [
+      { name: "Patrizia Caraveo", role: "Dirigente di ricerca presso INAF (Istituto Nazionale di Astrofisica)" },
+      { name: "Lucia Votano", role: "Dirigente di Ricerca affiliata INFN" },
+      { name: "Ersilia Vaudo Scarpetta", role: "ESA Chief Diversity Officer e Presidente de Il Cielo Itinerante" },
+      { name: "Monica Lazzarin", role: "Docente del Dipartimento di Fisica e Astronomia dell'Università di Padova" },
+      { name: "Alessia Gloder", role: "CEO di Astradyne" },
+      { name: "Barbara Negri", role: "Responsabile Volo Umano e Sperimentazione Scientifica in ASI" },
+      { name: "Elena Pettinelli", role: "Professoressa Ordinaria di Fisica Terrestre, Università degli Studi Roma Tre" },
+      { name: "Bianca Maria Poggianti", role: "Dirigente di ricerca INAF, Direttrice dell'INAF–Osservatorio Astronomico di Padova" },
+      { name: "Maria Vittoria Legnardi", role: "Dottoranda in astronomia all'Università di Padova" },
+      { name: "Raffaella Luglini", role: "Chief Sustainability Officer, Leonardo" },
+      { name: "Annamaria Nassisi", role: "Manager presso Thales Alenia Space Italia e co-leader WIA Europe Rome Chapter" },
+      { name: "Veronica La Regina", role: "Direttore Generale di Space Cargo Unlimited" },
+      { name: "Giorgia Pontetti", role: "CEO di G&A Engineering e CEO di Ferrari Farm Soc." },
+      { name: "Elena Toson", role: "COO e Business Development Manager di T4i" },
+      { name: "Cristina Valente", role: "Head of Institutional Key Account Management in Telespazio e co-leader WIA Europe Rome Chapter" },
+      { name: "Emanuela De Fazio", role: "Responsabile Editoriale AISE INCOSE Chapter Italia e Technology Development Business Unit GCAP Leonardo" },
+      { name: "Luisa Pontecorvo", role: "Studentessa" },
+    ],
+    moderators: [
+      { name: "Riccardo Mei", role: "Voce narrante di numerosi programmi Rai e di documentari" },
+    ],
+    notes: [
+      "Tra gli eventi collaterali: un incontro-dibattito sul rapporto tra fede e scienza, un momento dedicato all'alimentazione del futuro su altri pianeti con lo chef Stefano Polato, esperto di alimentazione per astronauti, la prima edizione del premio per la divulgazione Rossella Panarese, e un incontro fra arte e spazio con il brano di Sagan interpretato da Riccardo e Margherita Mei e brevi brani strumentali interpretati da Alessia Gloder.",
+      "Questa edizione ha dato vita all'omonimo libro \"Donne fra le stelle\", edito da Springer e curato da Patrizia Caraveo e Annamaria Nassisi: un libro raccontato dalle donne, con articoli di alta qualità scientifica ma linguaggio divulgativo, per chi cerca risposte sui misteri del cosmo, del nostro sistema solare e delle missioni spaziali dedicate alla protezione del nostro pianeta.",
+    ],
+  },
+  {
+    number: "4ª edizione",
+    year: "2025",
+    location: "Abano Terme, Veneto",
+    intro:
+      "Considerando l'alto interesse, l'evento si è spostato presso il Teatro Pietro d'Abano con due giornate di conferenze, presentazioni di libri e incontri con protagoniste dell'astrofisica, della geologia e della comunicazione scientifica, con il patrocinio del Comune di Abano Terme, della Regione Veneto, dell'ASI, dell'INAF, e di Federalberghi Abano Montegrotto (partner ospitalità). Il filo conduttore è stato la sostenibilità, declinata nelle sue varie sfaccettature con un approccio multidisciplinare, coniugando la conoscenza di un ambiente ostile, le tecnologie e la sostenibilità necessaria, con ricadute a salvaguardia del nostro pianeta e della vita umana, fino all'importanza della divulgazione.",
+    speakers: [
+      { name: "Maria Fabrizia Buongiorno", role: "Direttrice della Ricerca Tecnologica, INGV (Istituto Nazionale di Geofisica e Vulcanologia)" },
+      { name: "Maria Cristina Facchini", role: "Direttrice Istituto di Scienze dell'Atmosfera e del Clima, Consiglio Nazionale delle Ricerche" },
+      { name: "Claudia Vitolo", role: "ESA EO Digital Twin Earth Application Scientist, in rappresentanza di Simonetta Cheli, Director of ESA Earth Observation Programmes e Head of ESA/ESRIN" },
+      { name: "Annamaria Piras", role: "Director LEO Exploration Programs, Thales Alenia Space Italy" },
+      { name: "Luisa Bettili", role: "Responsabile del PMO Moonlight, Telespazio" },
+      { name: "Stefania De Pascale", role: "Dipartimento di Agraria, Università degli Studi di Napoli Federico II, Laboratory of Crop Research for Space, Accademia dei Georgofili" },
+      { name: "Valentina Sumini", role: "PhD, Space Architect, Engineer and Research Affiliate at MIT Media Lab" },
+      { name: "Maria Messina", role: "Co-leader WIA-E Rome RN" },
+      { name: "Mariafelicia De Laurentis", role: "Professoressa di Astronomia e Astrofisica, Università Federico II" },
+      { name: "Viviana Casasola", role: "Astrofisica, Ricercatrice, INAF" },
+      { name: "Margherita Cardi", role: "VP Programs and Business Development, Tyvak International" },
+      { name: "Marilisa Pischedda", role: "Ingegnera Aerospaziale, Presidente ASTEC" },
+      { name: "Ilaria Lucrezia Rossi", role: "Fisica e Content Creator scientifica" },
+      { name: "Paola Catapano", role: "Section Leader, Editorial Content Production CERN e Deputy Group Leader CERN" },
+    ],
+    moderators: [
+      { name: "Giuseppe Milano", role: "Segretario Generale Greenaccord" },
+      { name: "Annamaria Nassisi", role: "Manager Space Economy Observation & Navigation, Thales Alenia Space Italia" },
+      { name: "Rossella Spiga", role: "INAF – Osservatorio Astrofisico di Arcetri" },
+      { name: "Romina Gobbo", role: "Giornalista" },
+    ],
+    notes: [
+      "Patrizia Caraveo e Annamaria Nassisi hanno presentato il libro \"Donne fra le stelle\". Prima edizione del Premio Donne fra le Stelle e seconda edizione del premio per la divulgazione Rossella Panarese.",
+      "Si segnala la partecipazione straordinaria della giornalista e scrittrice Carmen Lasorella, che ha dialogato con Amalia Ercoli Finzi, vincitrice della prima edizione del Premio Donne fra le Stelle.",
+    ],
+  },
+];
 
 export const publication = {
   quote: "Il Festival Donne fra le Stelle è un appuntamento da non mancare!",
