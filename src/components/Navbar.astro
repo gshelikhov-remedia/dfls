@@ -1,11 +1,16 @@
 ---
 import { nav } from "../data/content";
+
+// Nav hrefs are anchors meant for the one-page homepage (#festival, #pacchetti, ...).
+// On any other page (e.g. /premio) they need to point back to the homepage first.
+const isHome = Astro.url.pathname === "/" || Astro.url.pathname === "/index.html";
+const resolveHref = (href: string) => (href.startsWith("#") && !isHome ? `/${href}` : href);
 ---
 
 <header id="site-header" class="navbar" data-state="top">
   <nav class="navbar__nav">
     <div id="nav-inner" class="navbar__inner">
-      <a href="#top" class="navbar__brand" aria-label="Donne fra le Stelle — home">
+      <a href={resolveHref("#top")} class="navbar__brand" aria-label="Donne fra le Stelle — home">
         <img src="/images/logo-white.svg" alt="Associazione Donne fra le Stelle" class="navbar__logo" />
       </a>
 
@@ -13,7 +18,7 @@ import { nav } from "../data/content";
         {
           nav.map((item) => (
             <li>
-              <a href={item.href} class="nav-link" data-href={item.href}>
+              <a href={resolveHref(item.href)} class="nav-link" data-href={item.href}>
                 {item.label}
               </a>
             </li>
@@ -22,7 +27,7 @@ import { nav } from "../data/content";
       </ul>
 
       <div class="navbar__cta-wrap">
-        <a href="#pacchetti" class="navbar__cta"> Diventa Sponsor </a>
+        <a href={resolveHref("#pacchetti")} class="navbar__cta"> Diventa Sponsor </a>
       </div>
 
       <button
@@ -49,14 +54,14 @@ import { nav } from "../data/content";
       {
         nav.map((item) => (
           <li>
-            <a href={item.href} class="mobile-nav-link">
+            <a href={resolveHref(item.href)} class="mobile-nav-link">
               {item.label}
             </a>
           </li>
         ))
       }
     </ul>
-    <a href="#pacchetti" class="mobile-nav-link mobile-menu__cta"> Diventa Sponsor </a>
+    <a href={resolveHref("#pacchetti")} class="mobile-nav-link mobile-menu__cta"> Diventa Sponsor </a>
   </div>
 </header>
 
@@ -101,13 +106,13 @@ import { nav } from "../data/content";
   }
 
   .navbar__logo {
-    height: 5rem;
+    height: 5.75rem;
     width: auto;
     transition: height 0.3s ease;
   }
 
   .navbar__inner.is-scrolled .navbar__logo {
-    height: 2.75rem;
+    height: 3.25rem;
   }
 
   .navbar__links {
@@ -287,8 +292,11 @@ import { nav } from "../data/content";
   });
   mobileLinks.forEach((link) => link.addEventListener("click", closeMenu));
 
-  // Scrollspy
-  const sections = navLinks
+  // Scrollspy — only for links that are actual in-page anchors (e.g. "#festival").
+  // Nav items pointing to a separate page ("/premio") are skipped: they are not
+  // valid CSS selectors and have nothing to scroll-spy on this page anyway.
+  const anchorLinks = navLinks.filter((link) => (link.dataset.href || "").startsWith("#"));
+  const sections = anchorLinks
     .map((link) => document.querySelector(link.dataset.href || ""))
     .filter(Boolean) as HTMLElement[];
 

@@ -1,0 +1,188 @@
+---
+import { Image } from "astro:assets";
+import { premioCategorie } from "../data/premio-content";
+import podcastImage from "../assets/podast.jpg";
+import videoImage from "../assets/video.jpg";
+
+// Filled icons (640x640 viewBox) — same convention as WhySponsor's "fill" type.
+const icons: Record<string, string> = {
+  video:
+    "M128 128C92.7 128 64 156.7 64 192L64 448C64 483.3 92.7 512 128 512L384 512C419.3 512 448 483.3 448 448L448 192C448 156.7 419.3 128 384 128L128 128zM496 400L569.5 458.8C573.7 462.2 578.9 464 584.3 464C597.4 464 608 453.4 608 440.3L608 199.7C608 186.6 597.4 176 584.3 176C578.9 176 573.7 177.8 569.5 181.2L496 240L496 400z",
+  podcast:
+    "M320 64C267 64 224 107 224 160L224 288C224 341 267 384 320 384C373 384 416 341 416 288L416 160C416 107 373 64 320 64zM176 248C176 234.7 165.3 224 152 224C138.7 224 128 234.7 128 248L128 288C128 385.9 201.3 466.7 296 478.5L296 528L248 528C234.7 528 224 538.7 224 552C224 565.3 234.7 576 248 576L392 576C405.3 576 416 565.3 416 552C416 538.7 405.3 528 392 528L344 528L344 478.5C438.7 466.7 512 385.9 512 288L512 248C512 234.7 501.3 224 488 224C474.7 224 464 234.7 464 248L464 288C464 367.5 399.5 432 320 432C240.5 432 176 367.5 176 288L176 248z",
+};
+
+const images: Record<string, ImageMetadata> = {
+  video: videoImage,
+  podcast: podcastImage,
+};
+---
+
+<section id="sezioni" class="premio-categorie">
+  <div class="premio-categorie__inner container">
+    <h3 class="premio-categorie__title reveal-up">{premioCategorie.heading}</h3>
+
+    <div class="premio-categorie__grid">
+      {
+        premioCategorie.sezioni.map((sezione) => (
+          <div class="premio-categorie__card reveal-up">
+            <Image
+              src={images[sezione.key]}
+              alt=""
+              class="premio-categorie__image"
+              widths={[400, 640, 900]}
+              sizes="(min-width: 640px) 50vw, 100vw"
+              quality={80}
+              format="webp"
+            />
+            <div class="premio-categorie__overlay" aria-hidden="true" />
+
+            <div class="premio-categorie__content">
+              <div class="premio-categorie__icon icon-plain">
+                <svg viewBox="0 0 640 640" fill="currentColor">
+                  <path d={icons[sezione.key]} />
+                </svg>
+              </div>
+              <h3>{sezione.name}</h3>
+              <a href={sezione.moduloHref} class="premio-categorie__link" target="_blank" rel="noopener noreferrer">
+                {sezione.moduloLabel}
+              </a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .premio-categorie {
+    position: relative;
+    background-color: var(--color-mist);
+    padding-block: 6rem;
+  }
+
+  @media (min-width: 640px) {
+    .premio-categorie {
+      padding-block: 8rem;
+    }
+  }
+
+  .premio-categorie__inner {
+    position: relative;
+    max-width: 60rem;
+  }
+
+  .premio-categorie__title {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-primary-600);
+  }
+
+  @media (min-width: 640px) {
+    .premio-categorie__title {
+      font-size: 1.875rem;
+    }
+  }
+
+  .premio-categorie__grid {
+    margin-top: 3.5rem;
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .premio-categorie__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .premio-categorie__card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border-radius: 1.5rem;
+    border: 1px solid var(--color-primary-100);
+    box-shadow: 0 1px 2px rgba(var(--rgb-black), 0.05);
+    transition: all 0.3s;
+  }
+
+  .premio-categorie__card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(var(--rgb-sky-400), 0.5);
+    box-shadow: 0 20px 25px rgba(var(--rgb-black), 0.1);
+  }
+
+  .premio-categorie__image {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .premio-categorie__card:hover .premio-categorie__image {
+    transform: scale(1.05);
+  }
+
+  .premio-categorie__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(var(--rgb-ink), 0.92) 5%,
+      rgba(var(--rgb-ink), 0.55) 55%,
+      rgba(var(--rgb-ink), 0.25) 100%
+    );
+  }
+
+  .premio-categorie__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .premio-categorie__content {
+      padding: 2rem;
+    }
+  }
+
+  .premio-categorie__icon {
+    color: var(--color-sky-300);
+  }
+
+  .premio-categorie__content h3 {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    line-height: 1.2;
+    color: white;
+  }
+
+  .premio-categorie__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    background-color: var(--color-sky-400);
+    padding: 0.625rem 1.25rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-primary-600);
+    transition: all 0.2s;
+  }
+
+  .premio-categorie__link:hover {
+    background-color: var(--color-sky-300);
+    transform: translateY(-2px);
+  }
+</style>

@@ -1,0 +1,221 @@
+---
+import { premioPremi } from "../data/premio-content";
+import SectionHeading from "../components/SectionHeading.astro";
+import StarIcon from "../components/StarIcon.astro";
+
+// Filled icons (640x640 viewBox), same convention as WhySponsor's "fill" type.
+// Trophy for the physical award, globe for the ESA travel prize.
+const trophyPath =
+  "M208.3 64L432.3 64C458.8 64 480.4 85.8 479.4 112.2C479.2 117.5 479 122.8 478.7 128L528.3 128C554.4 128 577.4 149.6 575.4 177.8C567.9 281.5 514.9 338.5 457.4 368.3C441.6 376.5 425.5 382.6 410.2 387.1C390 415.7 369 430.8 352.3 438.9L352.3 512L416.3 512C434 512 448.3 526.3 448.3 544C448.3 561.7 434 576 416.3 576L224.3 576C206.6 576 192.3 561.7 192.3 544C192.3 526.3 206.6 512 224.3 512L288.3 512L288.3 438.9C272.3 431.2 252.4 416.9 233 390.6C214.6 385.8 194.6 378.5 175.1 367.5C121 337.2 72.2 280.1 65.2 177.6C63.3 149.5 86.2 127.9 112.3 127.9L161.9 127.9C161.6 122.7 161.4 117.5 161.2 112.1C160.2 85.6 181.8 63.9 208.3 63.9zM165.5 176L113.1 176C119.3 260.7 158.2 303.1 198.3 325.6C183.9 288.3 172 239.6 165.5 176zM444 320.8C484.5 297 521.1 254.7 527.3 176L475 176C468.8 236.9 457.6 284.2 444 320.8z";
+const globePath =
+  "M320.2 112C435 112.1 528 205.2 528 320C528 342.1 524.6 363.4 518.2 383.4C516.2 383.8 514.1 384 512 384L509.3 384C500.8 384 492.7 380.6 486.7 374.6L457.4 345.3C451.4 339.3 448 331.2 448 322.7L448 272C448 263.2 455.2 256 464 256C472.8 256 480 248.8 480 240C480 231.2 472.8 224 464 224L440 224C426.7 224 416 234.7 416 248C416 261.3 405.3 272 392 272L336 272C327.2 272 320 279.2 320 288C320 296.8 312.8 304 304 304L278.6 304C266.1 304 256 293.9 256 281.4C256 275.4 258.4 269.6 262.6 265.4L332.7 195.3C334.8 193.2 336 190.3 336 187.3C336 181.1 330.9 176 324.7 176L310.6 176C298.1 176 288 165.9 288 153.4C288 147.4 290.4 141.6 294.6 137.4L317.7 114.3C318.5 113.5 319.3 112.8 320.2 112.1zM502.4 420.1C469.6 479.7 408.5 521.5 337.2 527.3C336.5 525 336.1 522.5 336.1 520C336.1 506.7 325.4 496 312.1 496L285.4 496C276.9 496 268.8 492.6 262.8 486.6L233.5 457.3C227.5 451.3 224.1 443.2 224.1 434.7L224.1 368C224.1 350.3 238.4 336 256.1 336L354.8 336C363.3 336 371.4 339.4 377.4 345.4L406.7 374.7C412.7 380.7 420.8 384.1 429.3 384.1L434.8 384.1C443.3 384.1 451.4 387.5 457.4 393.5L473.4 409.5C477.6 413.7 483.4 416.1 489.4 416.1C494.2 416.1 498.7 417.6 502.4 420.2zM320 576L346.2 574.7C337.6 575.6 328.9 576 320 576zM346.2 574.7C475.3 561.6 576 452.6 576 320C576 178.6 461.4 64 320 64L320 64C178.6 64 64 178.6 64 320C64 447.5 157.2 553.3 279.3 572.8C292.5 574.9 306.1 576 320 576zM251.3 187.3L219.3 219.3C213.1 225.5 202.9 225.5 196.7 219.3C190.5 213.1 190.5 202.9 196.7 196.7L228.7 164.7C234.9 158.5 245.1 158.5 251.3 164.7C257.5 170.9 257.5 181.1 251.3 187.3z";
+---
+
+<section id="premi" class="premio-premi">
+  <div class="starfield"></div>
+  <div class="premio-premi__inner container">
+    <SectionHeading title={premioPremi.heading} dark />
+
+    <div class="premio-premi__text reveal-up">
+      {premioPremi.paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+
+    <div class="premio-premi__highlight reveal-up">
+      <span class="premio-premi__highlight-label">{premioPremi.perCategoriaLabel}</span>
+
+      <div class="premio-premi__items">
+        {
+          premioPremi.premi.map((premio) => (
+            <div class="premio-premi__item">
+              <div class="premio-premi__item-icon icon-plain">
+                <svg viewBox="0 0 640 640" fill="currentColor">
+                  <path d={premio.key === "trofeo" ? trophyPath : globePath} />
+                </svg>
+              </div>
+              <div>
+                <h3>{premio.title}</h3>
+                <p>{premio.text}</p>
+                {premio.includes && (
+                  <ul>
+                    {premio.includes.map((item) => (
+                      <li>
+                        <StarIcon size="0.75rem" class="is-muted" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="premio-premi__notes reveal-up">
+      <h3>{premioPremi.noteHeading}</h3>
+      <ul>
+        {premioPremi.note.map((item) => <li>{item}</li>)}
+      </ul>
+      <p class="premio-premi__closing">{premioPremi.closing}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .premio-premi {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-ink);
+    padding-block: 6rem;
+  }
+
+  @media (min-width: 640px) {
+    .premio-premi {
+      padding-block: 8rem;
+    }
+  }
+
+  .premio-premi__inner {
+    position: relative;
+    max-width: 60rem;
+  }
+
+  .premio-premi__text {
+    margin: 3.5rem auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 48rem;
+  }
+
+  .premio-premi__text p {
+    font-size: 1rem;
+    line-height: 1.625;
+    color: rgba(var(--rgb-white), 0.75);
+  }
+
+  .premio-premi__highlight {
+    margin-top: 3rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(var(--rgb-sky-400), 0.6);
+    background: linear-gradient(to bottom, var(--color-deep-2), var(--color-ink));
+    padding: 2rem;
+    box-shadow: 0 25px 60px rgba(10, 15, 36, 0.35);
+  }
+
+  @media (min-width: 640px) {
+    .premio-premi__highlight {
+      padding: 2.5rem;
+    }
+  }
+
+  .premio-premi__highlight-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-sky-300);
+  }
+
+  .premio-premi__items {
+    margin-top: 1.75rem;
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .premio-premi__items {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .premio-premi__item {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .premio-premi__item-icon {
+    flex-shrink: 0;
+    color: var(--color-sky-300);
+  }
+
+  .premio-premi__item h3 {
+    font-family: var(--font-primary);
+    font-size: 1.25rem;
+    color: white;
+  }
+
+  .premio-premi__item p {
+    margin-top: 0.375rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: rgba(var(--rgb-white), 0.7);
+  }
+
+  .premio-premi__item ul {
+    margin-top: 0.875rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .premio-premi__item li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: rgba(var(--rgb-white), 0.6);
+  }
+
+  .premio-premi__item li :global(.is-muted) {
+    margin-top: 0.2rem;
+    color: var(--color-sky-500);
+  }
+
+  .premio-premi__notes {
+    margin-top: 3rem;
+    border-top: 1px solid rgba(var(--rgb-white), 0.1);
+    padding-top: 2rem;
+  }
+
+  .premio-premi__notes h3 {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    color: rgba(var(--rgb-white), 0.85);
+  }
+
+  .premio-premi__notes ul {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .premio-premi__notes li {
+    position: relative;
+    padding-left: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.625;
+    color: rgba(var(--rgb-white), 0.55);
+  }
+
+  .premio-premi__notes li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    height: 0.25rem;
+    width: 0.25rem;
+    border-radius: 9999px;
+    background-color: var(--color-sky-400);
+  }
+
+  .premio-premi__closing {
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    font-style: italic;
+    color: var(--color-sky-300);
+  }
+</style>

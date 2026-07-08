@@ -10,6 +10,7 @@ export const site = {
 
 export const nav = [
   { label: "Chi Siamo", href: "#festival" },
+  { label: "Galleria", href: "#galleria" },
   { label: "Perché Sponsorizzare", href: "#perche-sponsorizzare" },
   { label: "Pacchetti Sponsor", href: "#pacchetti" },
   { label: "La Sede", href: "#sede" },
@@ -77,6 +78,13 @@ export const festival = {
         "Indetto dalla III edizione alla memoria della grande omonima giornalista di Radio3 Scienza",
     },
   ],
+};
+
+export const galleryHeading = {
+  eyebrow: "I nostri momenti",
+  title: "Galleria Fotografica",
+  intro:
+    "Uno sguardo alle edizioni 2024 e 2025 del Festival Donne fra le Stelle: relatrici, pubblico e momenti dal palco.",
 };
 
 export const whySponsor = {

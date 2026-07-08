@@ -52,10 +52,9 @@ import LogoMarquee from "../components/LogoMarquee.astro";
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    justify-content: center;
     overflow: hidden;
     background-color: var(--color-ink);
-    padding-bottom: 5rem;
+    padding-bottom: 2rem;
     padding-top: 9rem;
   }
 
@@ -103,10 +102,12 @@ import LogoMarquee from "../components/LogoMarquee.astro";
 
   .hero__content {
     position: relative;
+    flex: 1;
     max-width: 64rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
   }
 
@@ -198,7 +199,7 @@ import LogoMarquee from "../components/LogoMarquee.astro";
 
   .hero__marquee-wrap {
     position: relative;
-    margin-top: 6rem;
+    margin-top: 2rem;
     max-width: 72rem;
   }
 </style>

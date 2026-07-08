@@ -572,16 +572,20 @@ import StarIcon from "../components/StarIcon.astro";
       if (isAnimating || nextIndex === activeIndex) return;
       isAnimating = true;
 
-      const outgoing = slides[activeIndex];
+      const prevIndex = activeIndex;
+      const outgoing = slides[prevIndex];
       const incoming = slides[nextIndex];
 
-      const finishIndex = nextIndex;
+      // Flip the pagination state right away. It's the immediate feedback the
+      // user is watching after a click/keypress, so it shouldn't sit frozen
+      // until the (still in-flight) content animation finishes ~0.7s later.
+      activeIndex = nextIndex;
+      updateJumpButtons();
+
       const tl = gsap.timeline({
         onComplete: () => {
-          setSlideState(activeIndex, false);
-          setSlideState(finishIndex, true);
-          activeIndex = finishIndex;
-          updateJumpButtons();
+          setSlideState(prevIndex, false);
+          setSlideState(nextIndex, true);
           isAnimating = false;
         },
       });
@@ -605,32 +609,53 @@ import StarIcon from "../components/StarIcon.astro";
       gsap.set(incomingLines, { yPercent: 110 });
       if (incoming.bodyEl) gsap.set(incoming.bodyEl, { autoAlpha: 0, y: 16 });
 
+      // Explicit, absolute timings (rather than "duration" + a stagger
+      // "amount" chained off ">-=n") — stagger amount adds on top of a
+      // tween's own duration, so the previous version's nominal ~0.55s/0.65s
+      // durations were actually finishing around 0.7s/1.3s. Keeping every
+      // stage's true end time visible here keeps the whole swap under ~0.7s.
+      const outLinesStart = 0;
+      const outLinesDur = 0.35;
+      const outLinesStagger = 0.05;
+      const outLinesEnd = outLinesStart + outLinesStagger + outLinesDur;
+
+      const inLinesStart = 0.22;
+      const inLinesDur = 0.4;
+      const inLinesStagger = 0.08;
+      const inLinesEnd = inLinesStart + inLinesStagger + inLinesDur;
+
+      const inBodyStart = 0.28;
+      const inBodyDur = 0.35;
+      const inBodyEnd = inBodyStart + inBodyDur;
+
+      const finalHideAt = Math.max(outLinesEnd, inLinesEnd, inBodyEnd, 0.6);
+
       tl.to(
         outgoingLines,
-        { yPercent: -110, duration: 0.55, ease: "power4.inOut", stagger: { amount: 0.15 } },
-        0
+        { yPercent: -110, duration: outLinesDur, ease: "power4.inOut", stagger: { amount: outLinesStagger } },
+        outLinesStart
       );
 
       if (outgoing.bodyEl) {
-        tl.to(outgoing.bodyEl, { autoAlpha: 0, y: -12, duration: 0.4, ease: "power2.inOut" }, 0);
+        tl.to(outgoing.bodyEl, { autoAlpha: 0, y: -12, duration: 0.3, ease: "power2.inOut" }, 0);
       }
 
       tl.to(
         incomingLines,
-        { yPercent: 0, duration: 0.65, ease: "power4.inOut", stagger: { amount: 0.25 } },
-        ">-=0.3"
+        { yPercent: 0, duration: inLinesDur, ease: "power4.inOut", stagger: { amount: inLinesStagger } },
+        inLinesStart
       );
 
       if (incoming.bodyEl) {
         tl.fromTo(
           incoming.bodyEl,
           { autoAlpha: 0, y: 16 },
-          { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" },
-          "<+=0.1"
+          { autoAlpha: 1, y: 0, duration: inBodyDur, ease: "power2.out" },
+          inBodyStart
         );
       }
 
-      tl.set(outgoing.item, { autoAlpha: 0 }, ">");
+      tl.set(outgoing.item, { autoAlpha: 0 }, finalHideAt);
     }
 
     startAutoplay();

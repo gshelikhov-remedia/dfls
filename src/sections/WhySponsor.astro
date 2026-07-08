@@ -42,7 +42,7 @@ const icons = [
       {
         whySponsor.reasons.map((reason, i) => (
           <div class="vantaggi-card why-sponsor__card">
-            <div class="why-sponsor__icon">
+            <div class="why-sponsor__icon icon-plain">
               {icons[i % icons.length].type === "fill" ? (
                 <svg viewBox="0 0 640 640" fill="currentColor">
                   <path d={icons[i % icons.length].d} />
@@ -122,17 +122,7 @@ const icons = [
 
   .why-sponsor__icon {
     margin-bottom: 1.25rem;
-    display: flex;
-    height: 2rem;
-    width: 2rem;
-    align-items: center;
-    justify-content: center;
     color: var(--color-sky-300);
-  }
-
-  .why-sponsor__icon svg {
-    height: 2rem;
-    width: 2rem;
   }
 
   .why-sponsor__card h3 {

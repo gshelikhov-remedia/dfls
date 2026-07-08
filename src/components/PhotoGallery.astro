@@ -1,0 +1,489 @@
+---
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+type Edition = "2024" | "2025";
+
+// Eagerly import the raw image modules so we get ImageMetadata (dimensions)
+// for every photo; the actual resized/recompressed variants are generated
+// on demand just below via getImage(), which is what keeps this affordable
+// for ~300 source photos.
+const dfs25Modules = import.meta.glob<{ default: ImageMetadata }>("/src/assets/dfs25/*.webp", {
+  eager: true,
+});
+const dfs24Modules = import.meta.glob<{ default: ImageMetadata }>("/src/assets/dfs24/*.webp", {
+  eager: true,
+});
+
+function toEntries(modules: Record<string, { default: ImageMetadata }>, edition: Edition) {
+  return Object.entries(modules)
+    .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+    .map(([, mod]) => ({ image: mod.default, edition }));
+}
+
+// Most recent edition first.
+const rawPhotos = [...toEntries(dfs25Modules, "2025"), ...toEntries(dfs24Modules, "2024")];
+
+// Build-time only: generate a small grid thumbnail and a larger lightbox
+// version of every photo. This runs once during `astro build`, not on every
+// page load — the browser only ever downloads the handful of thumbnails
+// actually shown, plus one full-size image if someone opens the lightbox.
+// Processed sequentially (not Promise.all) — running ~300 concurrent sharp
+// transforms through Astro's image build pipeline was causing hash/output
+// mismatches (HTML referencing a filename that never actually got written
+// to dist/_astro). One at a time is slower at build time but reliable.
+const photos: {
+  index: number;
+  edition: Edition;
+  thumbSrc: string;
+  thumbWidth: number;
+  thumbHeight: number;
+  fullSrc: string;
+}[] = [];
+
+for (const [index, photo] of rawPhotos.entries()) {
+  const thumb = await getImage({
+    src: photo.image,
+    width: 480,
+    format: "webp",
+    quality: 62,
+  });
+  const full = await getImage({
+    src: photo.image,
+    width: 1600,
+    format: "webp",
+    quality: 76,
+  });
+  photos.push({
+    index,
+    edition: photo.edition,
+    thumbSrc: thumb.src,
+    thumbWidth: thumb.attributes.width as number,
+    thumbHeight: thumb.attributes.height as number,
+    fullSrc: full.src,
+  });
+}
+
+const INITIAL_BATCH = 24;
+const BATCH_SIZE = 24;
+const hasMore = photos.length > INITIAL_BATCH;
+---
+
+<div class="photo-gallery" data-photo-gallery data-batch-size={BATCH_SIZE}>
+  <div class="photo-gallery__grid" data-photo-grid>
+    {
+      photos.map((photo, i) => (
+        <button
+          type="button"
+          class="photo-gallery__item reveal-up"
+          data-photo-item
+          data-index={photo.index}
+          data-full={photo.fullSrc}
+          data-edition={photo.edition}
+          aria-label={`Apri foto dell'edizione ${photo.edition} a schermo intero`}
+          hidden={i >= INITIAL_BATCH}
+        >
+          {i < INITIAL_BATCH ? (
+            <img
+              src={photo.thumbSrc}
+              width={photo.thumbWidth}
+              height={photo.thumbHeight}
+              alt={`Foto dell'edizione ${photo.edition} del Festival Donne fra le Stelle`}
+              loading={i < 8 ? "eager" : "lazy"}
+              decoding="async"
+            />
+          ) : (
+            <img
+              data-src={photo.thumbSrc}
+              width={photo.thumbWidth}
+              height={photo.thumbHeight}
+              alt={`Foto dell'edizione ${photo.edition} del Festival Donne fra le Stelle`}
+              loading="lazy"
+              decoding="async"
+            />
+          )}
+          <span class="photo-gallery__badge">{photo.edition}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    hasMore && (
+      <div class="photo-gallery__more">
+        <button type="button" class="photo-gallery__more-btn" data-load-more>
+          Carica altre foto
+        </button>
+      </div>
+    )
+  }
+
+  <div class="photo-gallery__lightbox" data-lightbox hidden role="dialog" aria-modal="true" aria-label="Galleria fotografica a schermo intero">
+    <button type="button" class="photo-gallery__lightbox-close" data-lightbox-close aria-label="Chiudi">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <button type="button" class="photo-gallery__lightbox-nav photo-gallery__lightbox-nav--prev" data-lightbox-prev aria-label="Foto precedente">
+      <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M5.26512 12L6.43721 10.7746L1.48837 5.28169V6.71831L6.45581 1.22535L5.28372 0L-2.21369e-07 6L5.26512 12Z" fill="currentColor" />
+      </svg>
+    </button>
+
+    <div class="photo-gallery__lightbox-stage">
+      <img data-lightbox-img alt="" />
+      <span class="photo-gallery__lightbox-badge" data-lightbox-badge />
+    </div>
+
+    <button type="button" class="photo-gallery__lightbox-nav photo-gallery__lightbox-nav--next" data-lightbox-next aria-label="Foto successiva">
+      <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M6.73488 12L5.56279 10.7746L10.5116 5.28169V6.71831L5.54419 1.22535L6.71628 0L12 6L6.73488 12Z" fill="currentColor" />
+      </svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  .photo-gallery {
+    position: relative;
+  }
+
+  .photo-gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .photo-gallery__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .photo-gallery__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .photo-gallery__item {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background-color: var(--color-primary-100);
+  }
+
+  .photo-gallery__item[hidden] {
+    display: none;
+  }
+
+  .photo-gallery__item img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .photo-gallery__item:hover img,
+  .photo-gallery__item:focus-visible img {
+    transform: scale(1.06);
+  }
+
+  .photo-gallery__item:focus-visible {
+    outline: 2px solid var(--color-sky-500);
+    outline-offset: 2px;
+  }
+
+  .photo-gallery__badge {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    border-radius: 9999px;
+    background-color: rgba(var(--rgb-ink), 0.55);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    padding: 0.2rem 0.6rem;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: white;
+  }
+
+  .photo-gallery__more {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+  }
+
+  .photo-gallery__more-btn {
+    border-radius: 9999px;
+    border: 1px solid var(--color-primary-100);
+    background-color: white;
+    padding: 0.75rem 2rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-primary-600);
+    box-shadow: 0 1px 2px rgba(var(--rgb-black), 0.05);
+    transition: all 0.25s;
+  }
+
+  .photo-gallery__more-btn:hover {
+    border-color: var(--color-sky-400);
+    background-color: var(--color-primary-50);
+    transform: translateY(-2px);
+  }
+
+  .photo-gallery__more-btn:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* ---------- Lightbox ---------- */
+
+  .photo-gallery__lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(var(--rgb-ink), 0.94);
+    opacity: 0;
+  }
+
+  .photo-gallery__lightbox[hidden] {
+    display: none;
+  }
+
+  .photo-gallery__lightbox-stage {
+    position: relative;
+    display: flex;
+    max-height: 88vh;
+    max-width: 90vw;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .photo-gallery__lightbox-stage img {
+    max-height: 88vh;
+    max-width: 90vw;
+    width: auto;
+    height: auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 25px 60px rgba(var(--rgb-black), 0.4);
+  }
+
+  .photo-gallery__lightbox-badge {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    border-radius: 9999px;
+    background-color: rgba(var(--rgb-ink), 0.6);
+    padding: 0.25rem 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: white;
+  }
+
+  .photo-gallery__lightbox-close,
+  .photo-gallery__lightbox-nav {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    color: white;
+    background-color: rgba(var(--rgb-white), 0.1);
+    transition: background-color 0.2s;
+  }
+
+  .photo-gallery__lightbox-close:hover,
+  .photo-gallery__lightbox-nav:hover {
+    background-color: rgba(var(--rgb-white), 0.2);
+  }
+
+  .photo-gallery__lightbox-close {
+    top: 1rem;
+    right: 1rem;
+    height: 2.75rem;
+    width: 2.75rem;
+  }
+
+  .photo-gallery__lightbox-close svg {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  .photo-gallery__lightbox-nav {
+    top: 50%;
+    height: 3rem;
+    width: 3rem;
+    transform: translateY(-50%);
+  }
+
+  .photo-gallery__lightbox-nav svg {
+    height: 0.9rem;
+    width: 0.9rem;
+  }
+
+  .photo-gallery__lightbox-nav--prev {
+    left: 0.75rem;
+  }
+
+  .photo-gallery__lightbox-nav--next {
+    right: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .photo-gallery__lightbox-nav--prev {
+      left: 1.5rem;
+    }
+    .photo-gallery__lightbox-nav--next {
+      right: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+
+  function initPhotoGallery() {
+    const root = document.querySelector<HTMLElement>("[data-photo-gallery]");
+    if (!root) return;
+
+    const items = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-photo-item]"));
+    const loadMoreBtn = root.querySelector<HTMLButtonElement>("[data-load-more]");
+    const batchSize = parseInt(root.dataset.batchSize || "24", 10);
+
+    const lightbox = root.querySelector<HTMLElement>("[data-lightbox]");
+    const lightboxImg = root.querySelector<HTMLImageElement>("[data-lightbox-img]");
+    const lightboxBadge = root.querySelector<HTMLElement>("[data-lightbox-badge]");
+    const closeBtn = root.querySelector<HTMLButtonElement>("[data-lightbox-close]");
+    const prevBtn = root.querySelector<HTMLButtonElement>("[data-lightbox-prev]");
+    const nextBtn = root.querySelector<HTMLButtonElement>("[data-lightbox-next]");
+
+    if (!lightbox || !lightboxImg || !lightboxBadge) return;
+
+    let currentIndex = 0;
+    let lastFocused: HTMLElement | null = null;
+
+    function showIndex(index: number) {
+      const item = items[index];
+      if (!item) return;
+      currentIndex = index;
+      const full = item.dataset.full || "";
+      const edition = item.dataset.edition || "";
+      lightboxImg!.src = full;
+      lightboxImg!.alt = `Foto dell'edizione ${edition} del Festival Donne fra le Stelle`;
+      lightboxBadge!.textContent = edition;
+    }
+
+    function openLightbox(index: number, trigger: HTMLElement) {
+      lastFocused = trigger;
+      showIndex(index);
+      lightbox!.hidden = false;
+      document.body.style.overflow = "hidden";
+      gsap.fromTo(lightbox, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" });
+      gsap.fromTo(
+        lightboxImg,
+        { opacity: 0, scale: 0.96 },
+        { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }
+      );
+      closeBtn?.focus();
+    }
+
+    function closeLightbox() {
+      gsap.to(lightbox, {
+        opacity: 0,
+        duration: 0.25,
+        ease: "power2.in",
+        onComplete: () => {
+          lightbox!.hidden = true;
+          lightboxImg!.src = "";
+          document.body.style.overflow = "";
+          lastFocused?.focus();
+        },
+      });
+    }
+
+    function step(delta: number) {
+      const next = (currentIndex + delta + items.length) % items.length;
+      showIndex(next);
+    }
+
+    items.forEach((item, index) => {
+      item.addEventListener("click", () => openLightbox(index, item));
+    });
+
+    closeBtn?.addEventListener("click", closeLightbox);
+    prevBtn?.addEventListener("click", () => step(-1));
+    nextBtn?.addEventListener("click", () => step(1));
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (lightbox!.hidden) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") step(-1);
+      if (e.key === "ArrowRight") step(1);
+    });
+
+    // Basic swipe support.
+    let touchStartX = 0;
+    lightbox.addEventListener(
+      "touchstart",
+      (e) => {
+        touchStartX = e.touches[0]?.clientX ?? 0;
+      },
+      { passive: true }
+    );
+    lightbox.addEventListener(
+      "touchend",
+      (e) => {
+        const dx = (e.changedTouches[0]?.clientX ?? 0) - touchStartX;
+        if (Math.abs(dx) > 50) step(dx > 0 ? -1 : 1);
+      },
+      { passive: true }
+    );
+
+    // Load-more pagination: reveal the next batch of hidden thumbnails and
+    // only now assign their `src`, so nothing downloads before the user
+    // actually asks for it.
+    loadMoreBtn?.addEventListener("click", () => {
+      const hiddenItems = items.filter((el) => el.hidden);
+      const batch = hiddenItems.slice(0, batchSize);
+
+      batch.forEach((el) => {
+        const img = el.querySelector<HTMLImageElement>("img");
+        if (img?.dataset.src) {
+          img.src = img.dataset.src;
+          delete img.dataset.src;
+        }
+        el.hidden = false;
+      });
+
+      gsap.fromTo(
+        batch,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.04, ease: "power3.out" }
+      );
+
+      if (items.every((el) => !el.hidden)) {
+        loadMoreBtn.remove();
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initPhotoGallery);
+</script>

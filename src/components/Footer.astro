@@ -1,6 +1,11 @@
 ---
 import { nav, contact, hero } from "../data/content";
 const year = new Date().getFullYear();
+
+// Same anchor-resolution as Navbar: #anchors target homepage sections, so
+// prefix with "/" when the footer is rendered on any other page.
+const isHome = Astro.url.pathname === "/" || Astro.url.pathname === "/index.html";
+const resolveHref = (href: string) => (href.startsWith("#") && !isHome ? `/${href}` : href);
 ---
 
 <footer class="site-footer">
@@ -18,9 +23,16 @@ const year = new Date().getFullYear();
       </div>
 
       <div class="site-footer__col">
+        <h3>Premio</h3>
+        <ul>
+          <li><a href={resolveHref("/premio")}>Premio Nazionale Rossella Panarese</a></li>
+        </ul>
+      </div>
+
+      <div class="site-footer__col">
         <h3>Sezioni</h3>
         <ul>
-          {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+          {nav.map((item) => <li><a href={resolveHref(item.href)}>{item.label}</a></li>)}
         </ul>
       </div>
 
@@ -60,9 +72,15 @@ const year = new Date().getFullYear();
     gap: 3rem;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 640px) {
     .site-footer__grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .site-footer__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
 
