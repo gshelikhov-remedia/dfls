@@ -10,7 +10,7 @@ export const site = {
 
 export const nav = [
   { label: "Chi Siamo", href: "#festival" },
-  { label: "Galleria", href: "#galleria" },
+  { label: "Programma", href: "#programma" },
   { label: "Perché Sponsorizzare", href: "#perche-sponsorizzare" },
   { label: "Pacchetti Sponsor", href: "#pacchetti" },
   { label: "La Sede", href: "#sede" },
@@ -58,8 +58,8 @@ export const sponsorLogos = [
 export const festival = {
   heading: "Il Festival",
   paragraphs: [
-    "Le protagoniste delle varie edizioni di Donne fra le Stelle sono state scienziate, astrofisiche, geofisiche, ingegnere aerospaziali e manager d'industria, imprenditrici, startupper e studentesse che, con le loro testimonianze, hanno offerto uno sguardo ampio e sfaccettato sul contributo femminile nei settori della ricerca scientifica e spaziale, così come nel mondo industriale.",
-    "Nel corso degli incontri sono stati esplorati temi di grande attualità: dalla conoscenza dell'universo alla tutela dell'ambiente, dal ruolo delle tecnologie spaziali per la salvaguardia del pianeta fino alla nuova corsa allo spazio.",
+    "Le protagoniste del Festival Donne fra le Stelle sono scienziate, astrofisiche, geofisiche, ingegnere aerospaziali e manager d'industria, imprenditrici, startupper e studentesse che, con le loro testimonianze, offrono uno sguardo ampio e sfaccettato sul contributo femminile nei settori della ricerca scientifica e spaziale, così come nel mondo industriale.",
+    "Nel corso dei precedenti quattro eventi di successo sono stati esplorati temi di grande attualità: dalla conoscenza dell'universo alla tutela dell'ambiente, dal ruolo delle tecnologie spaziali per la salvaguardia del pianeta fino alla nuova corsa allo spazio.",
     "Le relatrici hanno inoltre condiviso aspirazioni, percorsi professionali, ostacoli superati e risultati raggiunti, trasmettendo un forte messaggio di incoraggiamento alle nuove generazioni a intraprendere studi tecnico-scientifici e a scegliere con fiducia carriere in ambito STEM.",
     "Il Festival Donne fra le Stelle si rivolge a un pubblico ampio, composto da studenti, genitori e nonni, con l'obiettivo di guidare e ispirare le nuove generazioni, nonché a tutti coloro che sono curiosi di scoprire cosa si fa nel mondo dello spazio e comprendere l'importanza degli investimenti in questo settore.",
   ],
@@ -79,6 +79,306 @@ export const festival = {
     },
   ],
 };
+
+export type ProgrammeSession = {
+  time: string;
+  title: string;
+  moderator?: string;
+  description?: string[];
+  speakers?: string[];
+  note?: string;
+  interlude?: boolean;
+};
+
+export type ProgrammeBlock = {
+  heading?: string;
+  sessions: ProgrammeSession[];
+};
+
+export type ProgrammeDay = {
+  tabLabel: string;
+  dateLabel: string;
+  venueLabel: string;
+  blocks: ProgrammeBlock[];
+};
+
+export const programmeHeading = {
+  title: "Programma",
+  tagline: "Padova, 16–17 ottobre 2026",
+};
+
+export const programmeDays: ProgrammeDay[] = [
+  {
+    tabLabel: "16 Ottobre",
+    dateLabel: "16 ottobre 2026",
+    venueLabel: "Centro Culturale Altinate San Gaetano — Sala Polivalente Auditorium",
+    blocks: [
+      {
+        heading: "Sessione Plenaria",
+        sessions: [
+          {
+            time: "9:30",
+            title: "Saluti Istituzionali",
+            speakers: [
+              "Sergio Giordani, Sindaco di Padova",
+              "Alberto Stefani, Presidente Regione Veneto",
+              "Daniela Mapelli, Rettrice dell'Università di Padova",
+              "Elio Orio, Direttore Conservatore o Pierluigi Piran, Vicedirettore Conservatorio (inviare invito)",
+              "Roberto Ragazzoni, Presidente INAF",
+              "Simonetta Cheli, Director of ESA EO Programmes and Head of ESRIN",
+              "Teodoro Valente, Presidente ASI",
+            ],
+          },
+          {
+            time: "10:10",
+            title: "Saluto di benvenuto del Direttivo",
+            speakers: [
+              "Dante Fortunato, Fondatore di Donne fra le stelle e Presidente dell'Associazione a.i.",
+              "Annamaria Nassisi, Presidente Festival Donne fra le stelle",
+              "Patrizia Caraveo, Presidente Comitato tecno-scientifico Donne fra le stelle",
+              "Paolo Conte, Presidente del Premio Rossella Panarese Donne fra le stelle",
+            ],
+          },
+          {
+            time: "10:30",
+            title: "Dialogo con gli astronauti",
+            description: [
+              "Un momento di confronto diretto con astronauti che hanno vissuto l'esperienza unica del volo spaziale. Il dialogo offre l'opportunità di ascoltare storie personali, curiosità e riflessioni sulle missioni, la preparazione fisica e mentale, le sfide della vita a bordo della Stazione Spaziale Internazionale, e l'importanza della ricerca scientifica nello spazio. Dalle emozioni del lancio alla collaborazione internazionale, i partecipanti potranno porre domande e scoprire gli aspetti meno conosciuti dell'esplorazione spaziale, ispirandosi ai racconti di chi ha visto la Terra da una prospettiva straordinaria",
+            ],
+            speakers: [
+              "Anthea Comellini, ESA Astronaut Reserve e Paolo Nespoli o Walter Villadei (in attesa di una conferma della partecipazione di Anthea per finalizzazione)",
+            ],
+          },
+          {
+            time: "11:30",
+            title: "Video TAS Space for life e Concertisti Conservatorio (5-7 min)",
+            interlude: true,
+          },
+          {
+            time: "11:40",
+            title: "Tavola istituzionale su realtà industriali e prospettive",
+            moderator: "Moderatrice: TBD (da contattare)",
+            description: [
+              "Un confronto aperto tra associazioni industriali e distretti regionali, volto ad analizzare il ruolo strategico delle filiere territoriali e delle reti associative nello sviluppo del settore spaziale italiano. Il panel offrirà una panoramica sulle eccellenze regionali, sulle sinergie tra imprese, università e ricerca, nonché sulle prospettive di crescita grazie a nuove politiche di innovazione, internazionalizzazione e sostenibilità. I relatori porteranno le diverse esperienze del tessuto industriale diffuso, mettendo a fuoco le opportunità offerte dalla collaborazione interregionale e la visione condivisa di un ecosistema nazionale sempre più integrato e competitivo su scala europea e globale.",
+            ],
+            speakers: [
+              "Manila Marcuccio, CTNA",
+              "Federico Zoppas, RIR AIR Veneto",
+              "Elena Toson, AIPAS",
+              "Frida Paolella, Regione Marche",
+            ],
+          },
+          {
+            time: "12:30",
+            title: "Assegnazione Premio “Donne fra le Stelle”",
+            interlude: true,
+          },
+          {
+            time: "13:00",
+            title: "Lunch break",
+            interlude: true,
+          },
+        ],
+      },
+      {
+        heading: "Pomeriggio",
+        sessions: [
+          {
+            time: "14:30",
+            title: "Scopri le ultime innovazioni e le nuove tecnologie",
+            moderator: "Moderatrice: TBD (da verificare)",
+            description: [
+              "Un incontro dedicato a quantistica, intelligenza artificiale e innovazione, pensato per offrire una panoramica sulle nuove frontiere della ricerca e sulle applicazioni che stanno ridefinendo il futuro. Esperti e appassionati si confronteranno sui temi che stanno cambiando il panorama tecnologico e scientifico.",
+            ],
+            speakers: [
+              "Marilù Chiofalo, Docente Università di Pisa, fisica quantistica",
+              "Francesca Ferlaino, fisica quantistica nominata scienziata 2026 (da remoto Austria da verificare)",
+              "Elena Pinetti, astrofisica computazionale, Simons Foundation (da remoto US)",
+              "Gabriella Greison, CEO Greison Anatomy, fisica quantistica, divulgatrice",
+            ],
+          },
+          {
+            time: "15:40",
+            title: "Sostenibilità dello spazio e normative necessarie",
+            description: [
+              "Uno spazio sempre più affollato richiede nuove regole e soluzioni per garantirne la sostenibilità. In questo incontro esploreremo insieme le sfide legate alla gestione responsabile delle risorse spaziali, il problema dei detriti orbitali e il ruolo delle normative internazionali per preservare l'ambiente spaziale per le generazioni future. Esperti del settore discuteranno delle migliori pratiche, delle regole attuali e delle prospettive per uno sviluppo sostenibile oltre l'atmosfera terrestre.",
+              "Breve dialogo con Patrizia Caraveo autrice del libro “Ecologia Spaziale”, 10 min, segue tavola rotonda con:",
+            ],
+            speakers: [
+              "Marina Ruggeri, Università Roma TRE, Space Debris Mitigation",
+              "Luisa Ruggiero, TAS, Space Law e industria",
+              "Enrica Maria Ghia, GHIA Studio Legale Associato, Space Law e quadro normativo",
+            ],
+          },
+          {
+            time: "16:40",
+            title: "Video “Laboratorio in Antartide” di Andrea Bettini e Concertisti Conservatorio (5-7 min)",
+            interlude: true,
+          },
+          {
+            time: "16:50",
+            title: "Ambienti Estremi: comunanze fra Spazio, Artico e Subacqueo",
+            description: [
+              "Spazio, Artico e ambienti subacquei: territori affascinanti, ma estremi, dove la sopravvivenza e l'innovazione sono messe costantemente alla prova. Questo incontro vuole esplorare le sorprendenti comunanze tra questi tre mondi, dalle sfide ambientali alle tecnologie avanzate necessarie per operare in condizioni ostili. Esperti di diverse discipline condivideranno esperienze e soluzioni, mostrando come le conoscenze acquisite in un settore possano essere preziose anche per gli altri, offrendo nuove prospettive su esplorazione, sicurezza e sostenibilità.",
+            ],
+            speakers: [
+              "Chiara Montanari, Base Polare",
+              "TBD, Marina per Subacqueo",
+              "Maria Battagliere, ASI, Spazio & Subacqueo",
+            ],
+          },
+          {
+            time: "18:00",
+            title: "Assegnazione Premio Nazionale Rossella Panarese per la divulgazione scientifica spaziale",
+            description: [
+              "Premio dedicato alla giornalista di Radio3 Scienza e che si era resa disponibile per collaborare alla prima edizione di Donne fra le stelle. Da qui l'idea di indire un premio in suo nome dedicato a ricercatori, giornalisti, studiosi, autori, registi, blogger che con il loro impegno, e attraverso la loro arte di comunicatori, hanno contribuito a divulgare la scienza spaziale.",
+              "Rossella ha introdotto la scienza nei palinsesti di RAI-Radio3: dalle trasmissioni della prima metà degli Anni Novanta (Palomar, Futura e Duemila), al 2003, quando ideò Radio3 Scienza, l'attuale quotidiano scientifico di RAI-Radio3, di cui Rossella è stata curatrice e conduttrice fino alla sua prematura scomparsa.",
+              "Una vita dedicata alla comunicazione scientifica, anche attraverso le attività di insegnamento che ha svolto alla SISSA di Trieste, alla Sapienza Università di Roma e in molti altri corsi di formazione. Per ricordarne l'operato, il Comitato organizzatore di Donne fra le stelle ha dato vita, nel 2024, alla prima edizione del “Premio nazionale Rossella Panarese per la divulgazione scientifica spaziale”",
+            ],
+          },
+          {
+            time: "18:30",
+            title: "Fine",
+            note: "Visita libera delle attività esterne in Agorà",
+            interlude: true,
+          },
+          {
+            time: "20:00",
+            title: "Gala Dinner",
+            interlude: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    tabLabel: "17 Ottobre",
+    dateLabel: "17 ottobre 2026",
+    venueLabel: "Centro Culturale Altinate San Gaetano — Sala Polivalente Auditorium",
+    blocks: [
+      {
+        sessions: [
+          {
+            time: "9:30",
+            title: "Luna: da Galileo ai giorni nostri e con uno sguardo al futuro",
+            moderator: "Moderatore: TBD",
+            description: [
+              "La Luna ha sempre affascinato l'umanità, ispirando scienziati, esploratori e sognatori. In questo incontro ripercorreremo la storia dell'esplorazione lunare, dai primi osservatori di Galileo fino alle missioni contemporanee, tracciando un filo che collega le scoperte del passato alle sfide e alle opportunità del futuro. Un viaggio tra scienza, tecnologia e immaginazione per scoprire come la Luna continuerà a essere protagonista nella ricerca, nell'innovazione e nell'espansione dell'orizzonte umano.",
+            ],
+            speakers: [
+              "Laura Ferrero, ALTEC",
+              "Francesca Esposito, INAF Napoli",
+              "Michele Lavagna, Polimi",
+              "Sara Buson, astrofisica e atronomia, Università di Würzburg (Germania)",
+            ],
+          },
+          {
+            time: "10:30",
+            title: "Breve Video Moonlight o Video Artemis II altro offerto da ESA e Concertisti Conservatorio (5-7 min)",
+            interlude: true,
+          },
+          {
+            time: "10:40",
+            title: "Marte e Venere: connessione fra ricerca, missioni spaziali e ricadute per la Terra",
+            description: [
+              "Marte e Venere, pianeti enigmatici e affascinanti, sono al centro di missioni spaziali e studi scientifici che, oltre a svelare i segreti del Sistema Solare, offrono importanti ricadute per la Terra. In questo incontro analizzeremo come la ricerca su questi mondi e le tecnologie utilizzate nelle esplorazioni spaziali si traducano in progressi scientifici, innovazioni ingegneristiche e nuovi approcci alla tutela dell'ambiente terrestre. Un'occasione per scoprire come la conoscenza dello spazio contribuisca al miglioramento della vita sul nostro pianeta.",
+            ],
+            speakers: [
+              "TBD, ALTEC",
+              "Natalia Amanda Vergara Sassarini, INAF Padova",
+              "Daniela Billi, Prof Tor Vergata",
+              "Ilaria Cinelli, Space and Healthcare Expert (AIKO) ??? (dipende se arriva una risposta sponsor)",
+            ],
+          },
+          {
+            time: "11:40",
+            title: "“La Fisica che mi piace” con Vincenzo Schettini o progetto Refractions (Marilù Chiofalo)",
+            interlude: true,
+          },
+          {
+            time: "12:30",
+            title: "Lunch break",
+            note: "Visita libera delle attività esterne",
+            interlude: true,
+          },
+          {
+            time: "14:30",
+            title: "Terra: osservare il puntino blu da difendere",
+            moderator: "Moderatrice: TBD",
+            description: [
+              "Vista dallo spazio, la Terra appare come un piccolo, fragile puntino blu immerso nell'universo. In questo incontro esploreremo come l'osservazione del nostro pianeta, grazie alle moderne tecnologie satellitari, ci aiuti a comprenderne i cambiamenti, a proteggerne gli ecosistemi e a prendere decisioni più consapevoli per il suo futuro. Un viaggio tra immagini spettacolari, dati scientifici e nuove prospettive per riscoprire la responsabilità di custodire la nostra casa comune.",
+            ],
+            speakers: [
+              "TBD, ESA COPERNICUS",
+              "TBD, ASI IRIDE",
+              "Cinzia Zuffada, ingegnere italo-americana e Associate Chief Scientist presso il Jet Propulsion Laboratory (NASA – California), Tecnologie Spaziali per EO",
+            ],
+          },
+          {
+            time: "15:30",
+            title: "Breve Video ESA e Concertisti Conservatorio (5-7 min)",
+            interlude: true,
+          },
+          {
+            time: "15:40",
+            title: "Start-up e una nuova visione",
+            moderator: "Moderatrice: Alessia Gloder (startupper)",
+            description: [
+              "Determinazione, visione e talento stanno guidando una nuova generazione di giovani donne ai vertici dell'innovazione spaziale. In qualità di CEO, COO, CTO e nei ruoli più strategici delle start-up del settore, stanno contribuendo, con energia e competenza, a trasformare l'industria spaziale in uno spazio sempre più inclusivo, innovativo e sostenibile. Le loro storie testimoniano come passione per le STEM e spirito imprenditoriale possano superare barriere tradizionali, divenendo ispirazione e opportunità per le nuove generazioni di leader dell'economia dello spazio.",
+            ],
+            speakers: [
+              "Benedetta Margrethe Cattani, Founder and CEO Ecosmic",
+              "Camilla Conti, Co-founder e COO Adaptronics",
+              "Anna Mauro, Founder e CTO ORiS (Orbital Recharge in Space)",
+              "Ilaria …, Business Development",
+              "Chiara Mirani, Co-founder e COO Volta Structural Energy",
+              "Bianca Cefalo, Founder e CEO Space DOTS",
+            ],
+          },
+          {
+            time: "16:50",
+            title: "Breve Video ESA (Philab?) e Concertisti Conservatorio (5-7 min)",
+            interlude: true,
+          },
+          {
+            time: "17:00",
+            title: "“La Fisica che mi piace” con Vincenzo Schettini o progetto di Marilù",
+            moderator: "Moderatrice: TBD",
+            interlude: true,
+          },
+          {
+            time: "17:20",
+            title: "Spazio e Arte in connessione",
+            description: [
+              "Fin dai primi passi dell'umanità nello spazio, la scoperta dell'universo ha ispirato artisti, musicisti e scrittori a immaginare mondi nuovi e a rappresentare la bellezza e il mistero del cosmo. Oggi, grazie alle tecnologie spaziali, l'arte ha nuovi strumenti e prospettive per dialogare con la scienza: immagini satellitari diventano opere, installazioni sperimentano la gravità zero, la realtà virtuale trasporta nell'infinito. “Spazio e Arte in connessione” esplora come creatività e ricerca scientifica si incontrino per raccontare il nostro rapporto profondo con il cielo, stimolando meraviglia e consapevolezza in una sinergia che supera i confini della Terra.",
+            ],
+            speakers: [
+              "Claudia Kessler",
+              "Viviana Panaccia",
+              "Antonella Cotta",
+              "Vittoria Stanzione, studentessa fisica e scrittrice",
+            ],
+          },
+          {
+            time: "18:10",
+            title: "Assegnazione Premio Cambiare",
+            note: "Visita libera delle attività esterne",
+            interlude: true,
+          },
+          {
+            time: "19:00",
+            title: "Concerto reading su Pippa Bacca",
+            description: [
+              "Il concerto reading “Sono innamorata di Pippa Bacca – Chiedimi perché!” nasce dall'omonimo libro che ripercorre la vita, l'arte e il viaggio di Pippa Bacca, con la prefazione della giudice Paola Di Nicola.",
+              "La performance intreccia narrazione, musica dal vivo e immagini evocative per raccontare la fiducia come visione del mondo e l'incontro come atto di pace.",
+              "Attraverso il racconto si rivivono le tappe del suo progetto artistico e della sua dimensione umana, capace di lasciare un'eredità ancora oggi potente e necessaria.",
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
 
 export const galleryHeading = {
   eyebrow: "I nostri momenti",
@@ -211,6 +511,13 @@ export const comparisonTable = {
 export const venue = {
   heading: "La Sede",
   name: "Centro Culturale Altinate San Gaetano",
+  paragraphs: [
+    "Dopo quattro eventi di successo, il Centro Culturale Altinate San Gaetano ha messo a disposizione del Festival l'intera struttura che si trova nel suggestivo Palazzo San Gaetano.",
+    "Il Palazzo è uno storico edificio del XVI secolo nato come convento per l'Ordine dei Chierici Regolari Teatini, insieme all'adiacente Chiesa di San Gaetano, su progetto di Vincenzo Scamozzi. L'ultima ristrutturazione, completata nel 2008, ha restituito alla città uno spazio di grande fascino, dove la classicità delle forme originarie ideate da Scamozzi (allievo ed erede di Palladio) si integra armoniosamente con elementi moderni in acciaio e vetro temperato.",
+    "Il palazzo è stato scelto come prima tappa del Festival che dal prossimo anno sarà itinerante sul territorio nazionale. Si tratta di un evento in cui lo Spazio sarà raccontato dalle donne – ma non solo per le donne – attraverso le loro esperienze e testimonianze in un ambito che è ancora oggi principalmente maschile.",
+    "Sarà un appuntamento multidisciplinare che metterà in relazione lo spazio con la nostra quotidianità, offrendo tante sorprese per tutte le età.",
+  ],
+  highlight: "Questo connubio tra antico e contemporaneo è così riuscito che molti hanno soprannominato il Palazzo il “Beaubourg padovano”.",
   gallery: [
     {
       src: "/images/venue-entrance.webp",

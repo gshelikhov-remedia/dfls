@@ -4,8 +4,8 @@ import { venue } from "../data/content";
 
 <div class="gallery">
   {
-    venue.gallery.map((item) => (
-      <figure class="gallery__item reveal-up">
+    venue.gallery.map((item, i) => (
+      <figure class={`gallery__item gallery__item--${i + 1} reveal-up`}>
         <div class="gallery__frame">
           <img src={item.src} alt={item.alt} loading="lazy" />
         </div>
@@ -18,34 +18,49 @@ import { venue } from "../data/content";
 
 <style>
   .gallery {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    columns: 2;
+    column-gap: 1rem;
   }
 
   @media (min-width: 640px) {
     .gallery {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 1.25rem;
     }
   }
 
   .gallery__item {
     position: relative;
+    margin-bottom: 1rem;
+    break-inside: avoid;
     overflow: hidden;
     border-radius: 1rem;
   }
 
   .gallery__frame {
-    aspect-ratio: 4 / 3;
     width: 100%;
     overflow: hidden;
   }
 
   .gallery__frame img {
+    display: block;
     height: 100%;
     width: 100%;
     object-fit: cover;
     transition: transform 0.7s;
+  }
+
+  /* Varied aspect ratios create the magazine-style masonry rhythm. */
+  .gallery__item--1 .gallery__frame {
+    aspect-ratio: 3 / 4;
+  }
+  .gallery__item--2 .gallery__frame {
+    aspect-ratio: 1 / 1;
+  }
+  .gallery__item--3 .gallery__frame {
+    aspect-ratio: 4 / 5;
+  }
+  .gallery__item--4 .gallery__frame {
+    aspect-ratio: 3 / 4;
   }
 
   .gallery__item:hover .gallery__frame img {
@@ -63,7 +78,7 @@ import { venue } from "../data/content";
     inset-inline: 0;
     bottom: 0;
     padding: 1rem;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     font-weight: 500;
     color: white;
   }
@@ -71,6 +86,7 @@ import { venue } from "../data/content";
   @media (min-width: 640px) {
     .gallery__caption {
       padding: 1.25rem;
+      font-size: 0.875rem;
     }
   }
 </style>
