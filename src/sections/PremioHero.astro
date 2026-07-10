@@ -57,6 +57,33 @@ import rosellaAvatar from "../assets/rosella.png";
 </section>
 
 <style>
+  /* Hero entrance: pure CSS so it starts at first paint instead of waiting
+     for a JS bundle (mirrors Hero.astro; same delays as the old GSAP
+     timeline). Reduced-motion is neutralized by the global override. */
+  @keyframes premio-hero-enter {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  #premio-eyebrow,
+  #premio-title,
+  #premio-tagline,
+  #premio-meta,
+  #premio-ctas {
+    animation: premio-hero-enter 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  #premio-title { animation-delay: 0.25s; }
+  #premio-tagline { animation-delay: 0.6s; }
+  #premio-meta { animation-delay: 0.9s; }
+  #premio-ctas { animation-delay: 1.15s; }
+
   .premio-hero {
     position: relative;
     overflow: hidden;

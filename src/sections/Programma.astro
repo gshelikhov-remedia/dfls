@@ -466,7 +466,15 @@ import StarIcon from "../components/StarIcon.astro";
     });
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    initProgrammeTabs();
-  });
+  // Below the fold — set up during idle time so it stays off the critical path.
+  const startProgramme = () =>
+    window.requestIdleCallback
+      ? window.requestIdleCallback(initProgrammeTabs)
+      : setTimeout(initProgrammeTabs, 200);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startProgramme, { once: true });
+  } else {
+    startProgramme();
+  }
 </script>

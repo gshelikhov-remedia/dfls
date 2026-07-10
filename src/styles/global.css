@@ -5,25 +5,35 @@
 @import "@fontsource/poppins/600.css";
 @import "@fontsource/poppins/700.css";
 
-/* Titles */
+/* Titles: Playfair Display as a variable woff2 (per-script subsets with
+   unicode-range), replacing the old ~600KB raw TTFs in /public/fonts.
+   Registers the family "Playfair Display Variable". */
+@import "@fontsource-variable/playfair-display";
+@import "@fontsource-variable/playfair-display/wght-italic.css";
+
+/* Metric-matched local fallbacks so the font-display:swap repaint doesn't
+   shift layout: the fallback face is size-adjusted to occupy the same space
+   as the webfont it stands in for. */
 @font-face {
-  font-family: "Playfair Display";
-  src: url("/fonts/PlayfairDisplay-VariableFont_wght.ttf") format("truetype-variations");
-  font-weight: 400 900;
-  font-style: normal;
-  font-display: swap;
+  font-family: "Poppins Fallback";
+  src: local("Arial"), local("Helvetica Neue");
+  size-adjust: 112.16%;
+  ascent-override: 93.77%;
+  descent-override: 31.26%;
+  line-gap-override: 8.93%;
 }
 @font-face {
-  font-family: "Playfair Display";
-  src: url("/fonts/PlayfairDisplay-Italic-VariableFont_wght.ttf") format("truetype-variations");
-  font-weight: 400 900;
-  font-style: italic;
-  font-display: swap;
+  font-family: "Playfair Fallback";
+  src: local("Georgia");
+  size-adjust: 100%;
+  ascent-override: 108.2%;
+  descent-override: 25.1%;
+  line-gap-override: 0%;
 }
 
 :root {
-  --font-display: "Playfair Display", ui-serif, Georgia, serif;
-  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Playfair Display Variable", "Playfair Fallback", ui-serif, Georgia, serif;
+  --font-sans: "Poppins", "Poppins Fallback", ui-sans-serif, system-ui, sans-serif;
   /* Component-level headings (card titles, award titles): Poppins at 600,
      never Playfair Display — see DESIGN.md "Serif-Says-So Rule". */
   --font-primary: var(--font-sans);
@@ -182,6 +192,33 @@ table {
 
 .text-balance {
   text-wrap: balance;
+}
+
+/* ---------- Scroll reveal ----------
+   CSS-driven reveal-on-scroll, toggled by a single IntersectionObserver.
+   Replaces the previous one-GSAP-ScrollTrigger-per-element approach, which
+   was the main source of forced-reflow / Style & Layout time. Gated on the
+   `.js` class (added inline in <head>) so content is never hidden when
+   JavaScript is unavailable. */
+.js .reveal-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.js .reveal-up.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* Bare card-icon convention: no circular badge/background — used for

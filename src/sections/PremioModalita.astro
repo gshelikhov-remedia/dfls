@@ -8,27 +8,31 @@ import SectionHeading from "../components/SectionHeading.astro";
     <SectionHeading title={premioModalita.heading} />
     <p class="premio-modalita__intro reveal-up text-balance">{premioModalita.intro}</p>
 
-    <div class="premio-modalita__grid">
+    <div class="premio-modalita__rows">
       {
         premioModalita.steps.map((step, i) => (
-          <div class="premio-modalita__card reveal-up">
-            <span class="premio-modalita__number">{String(i + 1).padStart(2, "0")}</span>
-            <h3>{step.title}</h3>
-            <p>{step.text}</p>
-            {step.list && (
-              <ul>
-                {step.list.map((item) => (
-                  <li>
-                    <svg class="premio-modalita__check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {step.note && <p class="premio-modalita__note">{step.note}</p>}
-          </div>
+          <article class="premio-modalita__row reveal-up">
+            <div class="premio-modalita__marker">
+              <span class="premio-modalita__number">{String(i + 1).padStart(2, "0")}</span>
+            </div>
+            <div class="premio-modalita__body">
+              <h3>{step.title}</h3>
+              <p class="premio-modalita__text">{step.text}</p>
+              {step.list && (
+                <ul>
+                  {step.list.map((item) => (
+                    <li>
+                      <svg class="premio-modalita__check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                      </svg>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {step.note && <p class="premio-modalita__note">{step.note}</p>}
+            </div>
+          </article>
         ))
       }
     </div>
@@ -66,88 +70,98 @@ import SectionHeading from "../components/SectionHeading.astro";
     }
   }
 
-  .premio-modalita__grid {
+  .premio-modalita__rows {
     margin-top: 3.5rem;
+    border-top: 1px solid var(--color-primary-100);
+  }
+
+  .premio-modalita__row {
     display: grid;
-    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding-block: 2rem;
+    border-bottom: 1px solid var(--color-primary-100);
   }
 
-  @media (min-width: 640px) {
-    .premio-modalita__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (min-width: 768px) {
+    .premio-modalita__row {
+      grid-template-columns: 12rem 1fr;
+      gap: 2.5rem;
+      padding-block: 2.75rem;
+      align-items: start;
     }
   }
 
-  .premio-modalita__card {
-    position: relative;
+  .premio-modalita__marker {
     display: flex;
-    flex-direction: column;
-    border-radius: 1.5rem;
-    border: 1px solid var(--color-primary-100);
-    background-color: white;
-    padding: 1.75rem;
-    box-shadow: 0 1px 2px rgba(var(--rgb-black), 0.05);
-    transition: box-shadow 0.2s;
-  }
-
-  @media (min-width: 640px) {
-    .premio-modalita__card {
-      min-height: 22rem;
-    }
-  }
-
-  .premio-modalita__card:hover {
-    box-shadow: 0 20px 25px rgba(var(--rgb-black), 0.1);
+    align-items: baseline;
+    gap: 0.75rem;
   }
 
   .premio-modalita__number {
     font-family: var(--font-display);
-    font-size: 2.25rem;
+    font-size: 2.75rem;
     font-weight: 300;
+    line-height: 1;
     color: var(--color-sky-500);
   }
 
-  .premio-modalita__card h3 {
-    margin-top: 0.75rem;
+  @media (min-width: 768px) {
+    .premio-modalita__number {
+      font-size: 3.25rem;
+    }
+  }
+
+  .premio-modalita__body {
+    max-width: 46rem;
+  }
+
+  .premio-modalita__body h3 {
     font-family: var(--font-primary);
-    font-size: 1.5rem;
+    font-size: 1.375rem;
     line-height: 1.2;
     color: var(--color-primary-600);
   }
 
   @media (min-width: 640px) {
-    .premio-modalita__card h3 {
-      font-size: 1.7rem;
+    .premio-modalita__body h3 {
+      font-size: 1.625rem;
     }
   }
 
-  .premio-modalita__card p {
+  .premio-modalita__text {
     margin-top: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(var(--rgb-primary-600), 0.78);
+  }
+
+  .premio-modalita__body ul {
+    margin-top: 1.125rem;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .premio-modalita__body ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem 2rem;
+    }
+  }
+
+  .premio-modalita__body li {
+    display: flex;
+    gap: 0.625rem;
     font-size: 0.9375rem;
-    line-height: 1.625;
-    color: rgba(var(--rgb-primary-600), 0.75);
-  }
-
-  .premio-modalita__card ul {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.625rem;
-  }
-
-  .premio-modalita__card li {
-    display: flex;
-    gap: 0.625rem;
-    font-size: 0.875rem;
     line-height: 1.5;
   }
 
-  .premio-modalita__card li span {
-    color: rgba(var(--rgb-primary-600), 0.75);
+  .premio-modalita__body li span {
+    color: rgba(var(--rgb-primary-600), 0.78);
   }
 
   .premio-modalita__check {
-    margin-top: 0.125rem;
+    margin-top: 0.1875rem;
     height: 1rem;
     width: 1rem;
     flex-shrink: 0;
@@ -155,8 +169,10 @@ import SectionHeading from "../components/SectionHeading.astro";
   }
 
   .premio-modalita__note {
-    margin-top: 1rem;
-    font-size: 0.8125rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-primary-100);
+    font-size: 0.875rem;
     font-style: italic;
     color: var(--color-sky-600);
   }

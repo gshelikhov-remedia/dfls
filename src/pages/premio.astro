@@ -23,46 +23,7 @@ import { premioMeta } from "../data/premio-content";
   </main>
   <Footer />
 
-  <script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (!reduceMotion) {
-      // Hero entrance — same stagger pattern as the homepage hero
-      const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      heroTl
-        .from("#premio-eyebrow", { y: 16, opacity: 0, duration: 0.6 })
-        .from("#premio-title", { y: 26, opacity: 0, duration: 0.8 }, "-=0.35")
-        .from("#premio-tagline", { y: 20, opacity: 0, duration: 0.7 }, "-=0.45")
-        .from("#premio-meta", { y: 16, opacity: 0, duration: 0.6 }, "-=0.4")
-        .from("#premio-ctas", { y: 16, opacity: 0, duration: 0.6 }, "-=0.35");
-
-      // Generic reveal-up for any element flagged with the class
-      const revealEls = gsap.utils.toArray(".reveal-up");
-      revealEls.forEach((el) => {
-        gsap.fromTo(
-          el,
-          { y: 32, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            stagger: 0.1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: el as Element,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      });
-    } else {
-      gsap.set(".reveal-up", { opacity: 1, y: 0 });
-    }
-  </script>
+  <!-- Reveal-on-scroll (.reveal-up) is handled by the inline script in
+       BaseLayout; the hero entrance is pure CSS in PremioHero.astro. No
+       page-level JS (and no GSAP) needed here anymore. -->
 </BaseLayout>

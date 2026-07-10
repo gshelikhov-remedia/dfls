@@ -2,6 +2,13 @@
 import "../styles/global.css";
 import { site } from "../data/content";
 
+// Build-time hashed URLs for the above-the-fold fonts, so we can preload
+// them from <head>. Without this the browser only discovers fonts after
+// downloading and parsing the CSS bundle → visible FOUT on cold cache.
+import playfairWoff2 from "@fontsource-variable/playfair-display/files/playfair-display-latin-wght-normal.woff2?url";
+import playfairItalicWoff2 from "@fontsource-variable/playfair-display/files/playfair-display-latin-wght-italic.woff2?url";
+import poppins400Woff2 from "@fontsource/poppins/files/poppins-latin-400-normal.woff2?url";
+
 interface Props {
   title?: string;
   description?: string;
@@ -24,8 +31,42 @@ const { title = site.title, description = site.description } = Astro.props;
     <meta property="og:image" content="/images/hero-bg.webp" />
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#110e27" />
+    <link rel="preload" href={playfairWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={playfairItalicWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={poppins400Woff2} as="font" type="font/woff2" crossorigin />
+    <script is:inline>
+      // Set before first paint so CSS-driven scroll-reveal only hides content
+      // when JS can reveal it again (no-JS users see everything).
+      document.documentElement.classList.add("js");
+    </script>
   </head>
   <body>
     <slot />
+    <script is:inline>
+      // Reveal-on-scroll for `.reveal-up`, inlined so it runs as soon as the
+      // DOM is parsed — independent of the (much larger) GSAP bundle. On cold
+      // cache the bundle used to gate this, leaving sections invisible for
+      // seconds and then popping everything in at once.
+      (function () {
+        var els = document.querySelectorAll(".reveal-up");
+        if (!els.length) return;
+        if (!("IntersectionObserver" in window)) {
+          els.forEach(function (el) { el.classList.add("is-revealed"); });
+          return;
+        }
+        var io = new IntersectionObserver(
+          function (entries, obs) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-revealed");
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: "0px 0px -10% 0px", threshold: 0.1 }
+        );
+        els.forEach(function (el) { io.observe(el); });
+      })();
+    </script>
   </body>
 </html>

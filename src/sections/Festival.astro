@@ -1,5 +1,5 @@
 ---
-import { festival } from "../data/content";
+import { festival, direttivo } from "../data/content";
 import SectionHeading from "../components/SectionHeading.astro";
 import StarIcon from "../components/StarIcon.astro";
 ---
@@ -43,6 +43,62 @@ import StarIcon from "../components/StarIcon.astro";
           })
         }
       </div>
+    </div>
+
+    <div class="direttivo reveal-up">
+      <h3 class="direttivo__heading reveal-up">{direttivo.heading}</h3>
+      <p class="direttivo__intro">{direttivo.intro}</p>
+
+      <ul class="direttivo__list">
+        {
+          direttivo.members.map((member, i) => (
+            <li class="direttivo__item">
+              <button
+                type="button"
+                class="direttivo__row"
+                aria-expanded="false"
+                aria-controls={`direttivo-panel-${i}`}
+                id={`direttivo-trigger-${i}`}
+              >
+                {member.photo ? (
+                  <img class="direttivo__avatar" src={member.photo} alt={member.name} />
+                ) : (
+                  <span class="direttivo__avatar direttivo__avatar--placeholder" aria-hidden="true" />
+                )}
+                <span class="direttivo__meta">
+                  <span class="direttivo__name">{member.name}</span>
+                  <span class="direttivo__role">{member.role}</span>
+                </span>
+                <svg
+                  class="direttivo__chevron"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M6 9l6 6 6-6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <div
+                class="direttivo__panel"
+                id={`direttivo-panel-${i}`}
+                role="region"
+                aria-labelledby={`direttivo-trigger-${i}`}
+                hidden
+              >
+                <p>{member.bio}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </div>
 </section>
@@ -183,5 +239,210 @@ import StarIcon from "../components/StarIcon.astro";
     font-size: 0.875rem;
     line-height: 1.625;
     color: rgba(var(--rgb-primary-600), 0.7);
+  }
+
+  /* Direttivo */
+  .direttivo {
+    margin-top: 4rem;
+    width: 100%;
+  }
+
+  .direttivo__heading {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-primary-600);
+  }
+
+  @media (min-width: 640px) {
+    .direttivo__heading {
+      font-size: 1.875rem;
+    }
+  }
+
+  .direttivo__intro {
+    margin-top: 0.75rem;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.625;
+    color: rgba(var(--rgb-primary-600), 0.75);
+  }
+
+  @media (min-width: 640px) {
+    .direttivo__intro {
+      font-size: 1.125rem;
+    }
+  }
+
+  .direttivo__list {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .direttivo__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .direttivo__item {
+    border-radius: 1rem;
+    border: 1px solid var(--color-primary-100);
+    background-color: white;
+    box-shadow: 0 1px 2px rgba(var(--rgb-black), 0.05);
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .direttivo__item:hover {
+    box-shadow: 0 10px 15px rgba(var(--rgb-black), 0.1);
+  }
+
+  .direttivo__row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    color: inherit;
+    font: inherit;
+    border-radius: 1rem;
+  }
+
+  .direttivo__row:focus-visible {
+    outline: 2px solid var(--color-sky-600);
+    outline-offset: 2px;
+  }
+
+  .direttivo__avatar {
+    flex-shrink: 0;
+    height: 4rem;
+    width: 4rem;
+    border-radius: 9999px;
+    object-fit: cover;
+  }
+
+  .direttivo__avatar--placeholder {
+    display: block;
+    background-color: var(--color-primary-100);
+  }
+
+  .direttivo__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .direttivo__name {
+    font-family: var(--font-primary);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--color-primary-600);
+  }
+
+  .direttivo__role {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: rgba(var(--rgb-primary-600), 0.7);
+  }
+
+  .direttivo__chevron {
+    flex-shrink: 0;
+    color: var(--color-sky-500);
+    transition: transform 0.25s ease;
+  }
+
+  .direttivo__row[aria-expanded="true"] .direttivo__chevron {
+    transform: rotate(180deg);
+  }
+
+  .direttivo__panel {
+    padding: 0 1.5rem 1.25rem calc(1.5rem + 4rem + 1rem);
+  }
+
+  .direttivo__panel p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: rgba(var(--rgb-primary-600), 0.75);
+  }
+
+  @media (max-width: 600px) {
+    .direttivo__panel {
+      padding-left: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  const rows = document.querySelectorAll<HTMLButtonElement>(".direttivo__row");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  rows.forEach((row) => {
+    const panelId = row.getAttribute("aria-controls");
+    const panel = panelId ? document.getElementById(panelId) : null;
+    if (!panel) return;
+
+    row.addEventListener("click", () => {
+      const open = row.getAttribute("aria-expanded") === "true";
+      row.setAttribute("aria-expanded", String(!open));
+
+      if (open) {
+        if (reduce) {
+          panel.hidden = true;
+          panel.style.height = "";
+          return;
+        }
+        panel.style.height = panel.scrollHeight + "px";
+        requestAnimationFrame(() => {
+          panel.style.height = "0px";
+        });
+        panel.addEventListener(
+          "transitionend",
+          () => {
+            panel.hidden = true;
+            panel.style.height = "";
+          },
+          { once: true }
+        );
+      } else {
+        panel.hidden = false;
+        if (reduce) return;
+        const target = panel.scrollHeight;
+        panel.style.height = "0px";
+        requestAnimationFrame(() => {
+          panel.style.height = target + "px";
+        });
+        panel.addEventListener(
+          "transitionend",
+          () => {
+            panel.style.height = "";
+          },
+          { once: true }
+        );
+      }
+    });
+  });
+</script>
+
+<style>
+  .direttivo__panel {
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .direttivo__panel {
+      transition: height 0.28s ease;
+    }
   }
 </style>

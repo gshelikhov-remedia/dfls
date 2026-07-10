@@ -431,11 +431,12 @@ import StarIcon from "../components/StarIcon.astro";
 </style>
 
 <script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { SplitText } from "gsap/SplitText";
-
-  gsap.registerPlugin(ScrollTrigger, SplitText);
+  // Loaded lazily (see boot() at the bottom) so GSAP + the heavy SplitText
+  // plugin are never downloaded, parsed, or executed at initial page load —
+  // this section sits well below the fold.
+  let gsap: typeof import("gsap")["gsap"];
+  let ScrollTrigger: typeof import("gsap/ScrollTrigger")["ScrollTrigger"];
+  let SplitText: typeof import("gsap/SplitText")["SplitText"];
 
   function initEditionsSlider() {
     const wrap = document.querySelector<HTMLElement>("[data-editions-wrap]");
@@ -460,14 +461,14 @@ import StarIcon from "../components/StarIcon.astro";
     const autoplayEnabled = wrap.getAttribute("data-autoplay") === "true";
     const autoplayDuration = parseInt(wrap.getAttribute("data-autoplay-duration") || "", 10) || 9000;
 
-    let autoplayCall: gsap.core.Tween | null = null;
+    let autoplayCall: ReturnType<typeof gsap.delayedCall> | null = null;
     let isInView = true;
 
     type Slide = {
       item: HTMLElement;
       titleEl: HTMLElement | null;
       bodyEl: HTMLElement | null;
-      split: SplitText | null;
+      split: ReturnType<typeof SplitText.create> | null;
     };
 
     const slides: Slide[] = items.map((item) => ({
@@ -730,7 +731,31 @@ import StarIcon from "../components/StarIcon.astro";
     });
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  async function boot() {
+    const [gsapMod, stMod, splitMod] = await Promise.all([
+      import("gsap"),
+      import("gsap/ScrollTrigger"),
+      import("gsap/SplitText"),
+    ]);
+    gsap = gsapMod.gsap;
+    ScrollTrigger = stMod.ScrollTrigger;
+    SplitText = splitMod.SplitText;
+    gsap.registerPlugin(ScrollTrigger, SplitText);
     initEditionsSlider();
-  });
+  }
+
+  // Only load and initialise once the section is about to enter the viewport.
+  const editionsWrap = document.querySelector("[data-editions-wrap]");
+  if (editionsWrap) {
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          obs.disconnect();
+          boot();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    io.observe(editionsWrap);
+  }
 </script>

@@ -6,14 +6,19 @@ import LogoMarquee from "../components/LogoMarquee.astro";
 
 <section id="top" class="hero">
   <div class="hero__bg">
+    <img
+      src="/images/hero-bg.webp"
+      alt=""
+      class="hero__poster"
+      fetchpriority="high"
+    />
     <video
-      src="/videos/bg-video-10sec.mp4"
+      data-src="/videos/bg-video-10sec.mp4"
       class="hero__video"
-      autoplay
       loop
       muted
       playsinline
-      poster="/images/hero-bg.webp"
+      preload="none"
     ></video>
     <div class="hero__gradient hero__gradient--vertical"></div>
     <div class="hero__gradient hero__gradient--horizontal"></div>
@@ -46,6 +51,67 @@ import LogoMarquee from "../components/LogoMarquee.astro";
   </div>
 </section>
 
+<script>
+  // Attach the hero background video during idle time (off the critical
+  // path). The static poster <img> is the LCP and stays visible; the video
+  // fades in over it once frames are actually rendering. Skip entirely on
+  // small screens, reduced-motion, Save-Data, or slow connections.
+  const video = document.querySelector<HTMLVideoElement>(".hero__video");
+  if (video) {
+    const conn = (navigator as any).connection;
+    const slowConnection =
+      conn && conn.effectiveType && !String(conn.effectiveType).includes("4g");
+    const skip =
+      window.matchMedia("(max-width: 640px)").matches ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      (conn && conn.saveData) ||
+      slowConnection;
+
+    const attach = () => {
+      const src = video.getAttribute("data-src");
+      if (!src || video.src) return;
+
+      const start = () => {
+        video.play().catch(() => {});
+      };
+
+      // Fade over the poster only when frames are actually painting.
+      video.addEventListener("playing", () => {
+        video.classList.add("is-playing");
+      });
+
+      // Start as soon as the browser can render frames and keep buffering in
+      // the background. (The old canplaythrough + loadeddata-timeout combo
+      // started Firefox after the *first frame*, outrunning the buffer.)
+      video.addEventListener("canplay", start, { once: true });
+
+      // Stall recovery: Firefox suspends media downloads aggressively, so if
+      // playback outruns the buffer, resume when it catches up instead of
+      // freezing on the last decoded frame.
+      video.addEventListener("waiting", () => {
+        video.classList.remove("is-playing");
+        video.addEventListener("canplay", start, { once: true });
+      });
+
+      video.preload = "auto";
+      video.src = src;
+      video.load();
+    };
+
+    if (!skip) {
+      const schedule = () =>
+        window.requestIdleCallback
+          ? window.requestIdleCallback(attach)
+          : setTimeout(attach, 100);
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", schedule, { once: true });
+      } else {
+        schedule();
+      }
+    }
+  }
+</script>
+
 <style>
   .hero {
     position: relative;
@@ -69,11 +135,27 @@ import LogoMarquee from "../components/LogoMarquee.astro";
     inset: 0;
   }
 
-  .hero__video {
+  .hero__poster {
+    position: absolute;
+    inset: 0;
     height: 100%;
     width: 100%;
     object-fit: cover;
     object-position: center;
+    opacity: 0.8;
+  }
+
+  .hero__video {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .hero__video.is-playing {
     opacity: 0.8;
   }
 
@@ -110,6 +192,31 @@ import LogoMarquee from "../components/LogoMarquee.astro";
     justify-content: center;
     text-align: center;
   }
+
+  /* Hero entrance: pure CSS so it starts at first paint. The previous
+     gsap.from() version rendered the text visible, then hid it once the JS
+     bundle arrived and animated it back in — a visible blink on cold cache.
+     Delays mirror the old GSAP timeline. Reduced-motion is handled by the
+     global override (durations forced to ~0). */
+  @keyframes hero-enter {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .hero__content > * {
+    animation: hero-enter 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  #hero-title { animation-delay: 0.25s; }
+  #hero-tagline { animation-delay: 0.6s; }
+  #hero-meta { animation-delay: 0.9s; }
+  #hero-ctas { animation-delay: 1.15s; }
 
   .hero__kicker {
     margin-bottom: 0.5rem;

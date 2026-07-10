@@ -485,5 +485,15 @@ const hasMore = photos.length > INITIAL_BATCH;
     });
   }
 
-  document.addEventListener("DOMContentLoaded", initPhotoGallery);
+  // Below the fold — set up during idle time so it stays off the critical path.
+  const startGallery = () =>
+    window.requestIdleCallback
+      ? window.requestIdleCallback(initPhotoGallery)
+      : setTimeout(initPhotoGallery, 200);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startGallery, { once: true });
+  } else {
+    startGallery();
+  }
 </script>

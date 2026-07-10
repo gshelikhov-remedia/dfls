@@ -21,12 +21,12 @@ import Contact from "../sections/Contact.astro";
   <main>
     <Hero />
     <Festival />
+    <Sponsors />
     <Programma />
     <GallerySection />
     <WhySponsor />
     <Sponsorship />
     <ComparisonSection />
-    <Sponsors />
     <Venue />
     <PreviousEditions />
     <Publication />
@@ -35,55 +35,21 @@ import Contact from "../sections/Contact.astro";
   <Footer />
 
 <script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-    gsap.registerPlugin(ScrollTrigger);
-
+    // Reveal-on-scroll (.reveal-up) is handled by an inline script in
+    // BaseLayout so it never waits on this bundle. The hero entrance is pure
+    // CSS in Hero.astro for the same reason: on cold cache this module used
+    // to arrive late, hiding already-visible content and re-animating it.
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (!reduceMotion) {
-      // Hero entrance
-      const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      heroTl
-        .from("#hero-eyebrow", { y: 16, opacity: 0, duration: 0.6 })
-        .from("#hero-title", { y: 26, opacity: 0, duration: 0.8 }, "-=0.35")
-        .from("#hero-tagline", { y: 20, opacity: 0, duration: 0.7 }, "-=0.45")
-        .from("#hero-meta", { y: 16, opacity: 0, duration: 0.6 }, "-=0.4")
-        .from("#hero-ctas", { y: 16, opacity: 0, duration: 0.6 }, "-=0.35");
-
-      // Subtle parallax on hero background
-      gsap.to(".hero__video", {
-        yPercent: 12,
-        ease: "none",
-        scrollTrigger: {
-          trigger: "#top",
-          start: "top top",
-          end: "bottom top",
-        },
-      });
-
-      // Generic reveal-up for any element flagged with the class
-      const revealEls = gsap.utils.toArray(".reveal-up");
-      revealEls.forEach((el) => {
-        gsap.fromTo(
-          el,
-          { y: 32, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            stagger: 0.1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      });
-
+      // Below-the-fold card grids: GSAP is dynamically imported during idle
+      // time so it stays entirely off the critical path.
+      const initScrollAnimations = async () => {
+      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+      ]);
+      gsap.registerPlugin(ScrollTrigger);
       // Vantaggi cards: one ScrollTrigger on the grid, cards stagger in
       // together instead of animating row by row.
       const vantaggiGrid = document.querySelector<HTMLElement>("#perche-sponsorizzare");
@@ -128,8 +94,16 @@ import Contact from "../sections/Contact.astro";
           }
         );
       }
-    } else {
-      gsap.set(".reveal-up, .vantaggi-card, .sponsor-card", { opacity: 1, y: 0 });
+      };
+
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(initScrollAnimations);
+      } else {
+        setTimeout(initScrollAnimations, 200);
+      }
     }
+    // Under reduced motion nothing hides the cards in the first place —
+    // their initial hidden state is applied by the GSAP fromTo above, which
+    // never runs — so no else branch is needed.
   </script>
 </BaseLayout>

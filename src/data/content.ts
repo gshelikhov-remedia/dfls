@@ -34,10 +34,10 @@ export const sponsorLogos = [
   { src: "/images/sponsors/stemma-padova.jpg", alt: "Comune di Padova" },
   { src: "/images/sponsors/mur.svg", alt: "Ministero dell'Università e della Ricerca" },
   { src: "/images/sponsors/asi.webp", alt: "Agenzia Spaziale Italiana" },
-  { src: "/images/sponsors/esa.svg", alt: "ESA — Sotto l'alto patrocinio del Parlamento europeo" },
+  { src: "/images/sponsors/esa.svg", alt: "ESA — Sotto l'alto patrocinio del Parlamento europeo", url: "https://www.esa.int/" },
   { src: "/images/sponsors/inaf.jpg", alt: "INAF — Istituto Nazionale di Astrofisica" },
   { src: "/images/sponsors/sait.webp", alt: "Società Astronomica Italiana" },
-  { src: "/images/sponsors/aipas.webp", alt: "AIPAS — Associazione delle Imprese per le Attività Spaziali" },
+  { src: "/images/sponsors/aipas.webp", alt: "AIPAS — Associazione delle Imprese per le Attività Spaziali", url: "https://aipas.it/" },
   { src: "/images/sponsors/universita-padova.webp", alt: "Università degli Studi di Padova" },
   { src: "/images/sponsors/infn.webp", alt: "INFN — Istituto Nazionale di Fisica Nucleare" },
   { src: "/images/sponsors/cnr.jpg", alt: "CNR — Consiglio Nazionale delle Ricerche" },
@@ -53,6 +53,7 @@ export const sponsorLogos = [
   { src: "/images/sponsors/inclusione-donna.jpg", alt: "#InclusioneDonna" },
   { src: "/images/sponsors/acca-tagliando.jpg", alt: "Accatagliato" },
   { src: "/images/sponsors/alpm.webp", alt: "ALPM" },
+  { src: "/images/sponsors/remedia-logo-positive.svg", alt: "Remedia", url: "https://www.remediagroup.it/" },
 ];
 
 export const festival = {
@@ -78,6 +79,41 @@ export const festival = {
         "Indetto dalla III edizione alla memoria della grande omonima giornalista di Radio3 Scienza",
     },
   ],
+};
+
+export type DirettivoMember = {
+  name: string;
+  role: string;
+  bio: string;
+  photo?: string;
+};
+
+export const direttivo = {
+  heading: "Il Direttivo",
+  intro:
+    "Il Festival Donne fra le Stelle è organizzato da un Direttivo composto da:",
+  members: [
+    {
+      name: "Annamaria Nassisi",
+      role: "Presidente del Festival",
+      bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod, nisi vel consectetur euismod, nunc nisl aliquam nunc, vitae aliquam nisl nunc vitae nisl. Nam auctor, urna vitae tincidunt luctus, nisl nunc aliquam nunc.",
+    },
+    {
+      name: "Dante Fortunato",
+      role: "Presidente e fondatore dell'Associazione",
+      bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod, nisi vel consectetur euismod, nunc nisl aliquam nunc, vitae aliquam nisl nunc vitae nisl. Nam auctor, urna vitae tincidunt luctus, nisl nunc aliquam nunc.",
+    },
+    {
+      name: "Patrizia Caraveo",
+      role: "Presidente del Comitato Scientifico",
+      bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod, nisi vel consectetur euismod, nunc nisl aliquam nunc, vitae aliquam nisl nunc vitae nisl. Nam auctor, urna vitae tincidunt luctus, nisl nunc aliquam nunc.",
+    },
+    {
+      name: "Paolo Conte",
+      role: "Presidente della Giuria del premio Rossella Panarese",
+      bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod, nisi vel consectetur euismod, nunc nisl aliquam nunc, vitae aliquam nisl nunc vitae nisl. Nam auctor, urna vitae tincidunt luctus, nisl nunc aliquam nunc.",
+    },
+  ] as DirettivoMember[],
 };
 
 export type ProgrammeSession = {

@@ -9,12 +9,29 @@ import SectionHeading from "../components/SectionHeading.astro";
 
     <div class="sponsors__grid">
       {
-        sponsorLogos.map((logo) => (
-          <div class="sponsor-card" tabindex="0">
-            <img src={logo.src} alt={logo.alt} loading="lazy" />
-            <span class="sponsor-card__tooltip" aria-hidden="true">Visita sito web</span>
-          </div>
-        ))
+        sponsorLogos.map((logo) => {
+          const url = "url" in logo ? logo.url : undefined;
+          if (url) {
+            return (
+              <a
+                class="sponsor-card"
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${logo.alt} — visita il sito web`}
+              >
+                <img src={logo.src} alt={logo.alt} loading="lazy" />
+                <span class="sponsor-card__tooltip" aria-hidden="true">Visita sito web</span>
+              </a>
+            );
+          }
+          return (
+            <div class="sponsor-card" tabindex="0">
+              <img src={logo.src} alt={logo.alt} loading="lazy" />
+              <span class="sponsor-card__tooltip" aria-hidden="true">Visita sito web</span>
+            </div>
+          );
+        })
       }
     </div>
   </div>
