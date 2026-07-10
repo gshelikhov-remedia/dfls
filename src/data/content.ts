@@ -2,6 +2,8 @@
 // "Festival DFS 2026 Sponsorship" fornito dal cliente.
 // Nessun testo qui è stato inventato: ogni stringa deriva da una delle 10 pagine del PDF.
 
+import type { ImageMetadata } from "astro";
+
 export const site = {
   title: "Festival Donne fra le Stelle 2026 | Padova, 16–17 Ottobre",
   description:
@@ -30,30 +32,48 @@ export const hero = {
   patrociniLabel: "Evento patrocinato e sostenuto da:",
 };
 
-export const sponsorLogos = [
-  { src: "/images/sponsors/stemma-padova.jpg", alt: "Comune di Padova" },
-  { src: "/images/sponsors/mur.svg", alt: "Ministero dell'Università e della Ricerca" },
-  { src: "/images/sponsors/asi.webp", alt: "Agenzia Spaziale Italiana" },
-  { src: "/images/sponsors/esa.svg", alt: "ESA — Sotto l'alto patrocinio del Parlamento europeo", url: "https://www.esa.int/" },
-  { src: "/images/sponsors/inaf.jpg", alt: "INAF — Istituto Nazionale di Astrofisica" },
-  { src: "/images/sponsors/sait.webp", alt: "Società Astronomica Italiana" },
-  { src: "/images/sponsors/aipas.webp", alt: "AIPAS — Associazione delle Imprese per le Attività Spaziali", url: "https://aipas.it/" },
-  { src: "/images/sponsors/universita-padova.webp", alt: "Università degli Studi di Padova" },
-  { src: "/images/sponsors/infn.webp", alt: "INFN — Istituto Nazionale di Fisica Nucleare" },
-  { src: "/images/sponsors/cnr.jpg", alt: "CNR — Consiglio Nazionale delle Ricerche" },
-  { src: "/images/sponsors/dipartimento-fisica-astronomia.webp", alt: "Dipartimento di Fisica e Astronomia Galileo Galilei" },
-  { src: "/images/sponsors/coelum-astronomia.webp", alt: "Coelum Astronomia" },
-  { src: "/images/sponsors/planetario-padova.jpg", alt: "Planetario di Padova" },
-  { src: "/images/sponsors/ingv.jpg", alt: "INGV — Istituto Nazionale di Geofisica e Vulcanologia" },
-  { src: "/images/sponsors/castello-di-san-pelagio.jpg", alt: "Castello di San Pelagio" },
-  { src: "/images/sponsors/wia.jpg", alt: "WIA" },
-  { src: "/images/sponsors/steamiamoci.webp", alt: "STEAMiamoci" },
-  { src: "/images/sponsors/fondazione-roberta-lanzino.webp", alt: "Fondazione Roberta Lanzino" },
-  { src: "/images/sponsors/fidapa-bpw.webp", alt: "FIDAPA – BPW Italy" },
-  { src: "/images/sponsors/inclusione-donna.jpg", alt: "#InclusioneDonna" },
-  { src: "/images/sponsors/acca-tagliando.jpg", alt: "Accatagliato" },
-  { src: "/images/sponsors/alpm.webp", alt: "ALPM" },
-  { src: "/images/sponsors/remedia-logo-positive.svg", alt: "Remedia", url: "https://www.remediagroup.it/" },
+// Sponsor logos live in src/assets/sponsors so Astro's image pipeline can
+// resize them to their displayed size and serve webp (they were previously
+// in /public and shipped full-size/unoptimized — ~250KB of wasted bytes per
+// PageSpeed). Resolved eagerly at build time; a typo in a filename fails the
+// build instead of 404ing silently.
+const sponsorImageModules = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/sponsors/*.{jpg,jpeg,png,webp,avif,svg}",
+  { eager: true }
+);
+
+function sponsorImage(file: string): ImageMetadata {
+  const mod = sponsorImageModules[`../assets/sponsors/${file}`];
+  if (!mod) {
+    throw new Error(`Sponsor logo not found in src/assets/sponsors/: ${file}`);
+  }
+  return mod.default;
+}
+
+export const sponsorLogos: Array<{ image: ImageMetadata; alt: string; url?: string }> = [
+  { image: sponsorImage("stemma-padova.jpg"), alt: "Comune di Padova" },
+  { image: sponsorImage("mur.svg"), alt: "Ministero dell'Università e della Ricerca" },
+  { image: sponsorImage("asi.webp"), alt: "Agenzia Spaziale Italiana" },
+  { image: sponsorImage("esa.svg"), alt: "ESA — Sotto l'alto patrocinio del Parlamento europeo", url: "https://www.esa.int/" },
+  { image: sponsorImage("inaf.jpg"), alt: "INAF — Istituto Nazionale di Astrofisica" },
+  { image: sponsorImage("sait.webp"), alt: "Società Astronomica Italiana" },
+  { image: sponsorImage("aipas.webp"), alt: "AIPAS — Associazione delle Imprese per le Attività Spaziali", url: "https://aipas.it/" },
+  { image: sponsorImage("universita-padova.webp"), alt: "Università degli Studi di Padova" },
+  { image: sponsorImage("infn.webp"), alt: "INFN — Istituto Nazionale di Fisica Nucleare" },
+  { image: sponsorImage("cnr.jpg"), alt: "CNR — Consiglio Nazionale delle Ricerche" },
+  { image: sponsorImage("dipartimento-fisica-astronomia.webp"), alt: "Dipartimento di Fisica e Astronomia Galileo Galilei" },
+  { image: sponsorImage("coelum-astronomia.webp"), alt: "Coelum Astronomia" },
+  { image: sponsorImage("planetario-padova.jpg"), alt: "Planetario di Padova" },
+  { image: sponsorImage("ingv.jpg"), alt: "INGV — Istituto Nazionale di Geofisica e Vulcanologia" },
+  { image: sponsorImage("castello-di-san-pelagio.jpg"), alt: "Castello di San Pelagio" },
+  { image: sponsorImage("wia.jpg"), alt: "WIA" },
+  { image: sponsorImage("steamiamoci.webp"), alt: "STEAMiamoci" },
+  { image: sponsorImage("fondazione-roberta-lanzino.webp"), alt: "Fondazione Roberta Lanzino" },
+  { image: sponsorImage("fidapa-bpw.webp"), alt: "FIDAPA – BPW Italy" },
+  { image: sponsorImage("inclusione-donna.jpg"), alt: "#InclusioneDonna" },
+  { image: sponsorImage("acca-tagliando.jpg"), alt: "Accatagliato" },
+  { image: sponsorImage("alpm.webp"), alt: "ALPM" },
+  { image: sponsorImage("remedia-logo-positive.svg"), alt: "Remedia", url: "https://www.remediagroup.it/" },
 ];
 
 export const festival = {

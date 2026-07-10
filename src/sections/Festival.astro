@@ -1,7 +1,14 @@
 ---
+import { Image } from "astro:assets";
 import { festival, direttivo } from "../data/content";
 import SectionHeading from "../components/SectionHeading.astro";
 import StarIcon from "../components/StarIcon.astro";
+import rosellaImage from "../assets/rosella.png";
+import logoPremioImage from "../assets/logo-premio.jpg";
+
+// Award badges display at 64×64; 128 covers 2x displays (they shipped as
+// full-size 320px jpg from /public before — ~135KB for two 64px circles).
+const AWARD_SIZE = 128;
 ---
 
 <section id="festival" class="festival">
@@ -27,10 +34,13 @@ import StarIcon from "../components/StarIcon.astro";
                 class="festival__award-card"
                 {...(isRossella ? { href: "/premio" } : {})}
               >
-                <img
+                <Image
                   class="festival__award-image"
-                  src={isRossella ? "/images/rosella.jpg" : "/images/logo-premio.jpg"}
+                  src={isRossella ? rosellaImage : logoPremioImage}
                   alt={award.name}
+                  width={AWARD_SIZE}
+                  height={AWARD_SIZE}
+                  loading="lazy"
                 />
                 <div class="festival__award-title">
                   <StarIcon size="1.25rem" />
@@ -213,7 +223,9 @@ import StarIcon from "../components/StarIcon.astro";
     color: var(--color-sky-600);
   }
 
-  .festival__award-image {
+  /* :global() because the img is rendered by <Image> and doesn't carry this
+     component's scope attribute. */
+  :global(.festival__award-image) {
     margin-bottom: 1rem;
     height: 4rem;
     width: 4rem;

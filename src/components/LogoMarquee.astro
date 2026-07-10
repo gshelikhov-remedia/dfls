@@ -1,7 +1,13 @@
 ---
+import { Image } from "astro:assets";
 import { sponsorLogos, hero } from "../data/content";
 
 const loop = [...sponsorLogos, ...sponsorLogos];
+
+// Logos display at ≤68px tall inside the marquee box; 136px covers 2x
+// displays. Astro resizes + converts to webp at build time (SVGs pass
+// through untouched).
+const LOGO_HEIGHT = 136;
 ---
 
 <div class="marquee">
@@ -13,7 +19,7 @@ const loop = [...sponsorLogos, ...sponsorLogos];
       {
         loop.map((logo) => (
           <div class="marquee__logo">
-            <img src={logo.src} alt={logo.alt} loading="lazy" />
+            <Image src={logo.image} alt={logo.alt} height={LOGO_HEIGHT} loading="lazy" />
           </div>
         ))
       }
@@ -90,7 +96,9 @@ const loop = [...sponsorLogos, ...sponsorLogos];
     }
   }
 
-  .marquee__logo img {
+  /* :global() because the img is rendered by <Image> and doesn't carry this
+     component's scope attribute. */
+  .marquee__logo :global(img) {
     display: block;
     max-height: 100%;
     max-width: 100%;

@@ -1,6 +1,12 @@
 ---
+import { Image } from "astro:assets";
 import { sponsorLogos } from "../data/content";
 import SectionHeading from "../components/SectionHeading.astro";
+
+// Card is 5.5rem (88px) tall with 10px vertical padding → ~68px of logo;
+// 136px covers 2x displays. Same variant as LogoMarquee, so each logo is
+// only generated (and downloaded) once.
+const LOGO_HEIGHT = 136;
 ---
 
 <section id="sponsor" class="sponsors">
@@ -20,14 +26,14 @@ import SectionHeading from "../components/SectionHeading.astro";
                 rel="noopener noreferrer"
                 aria-label={`${logo.alt} — visita il sito web`}
               >
-                <img src={logo.src} alt={logo.alt} loading="lazy" />
+                <Image src={logo.image} alt={logo.alt} height={LOGO_HEIGHT} loading="lazy" />
                 <span class="sponsor-card__tooltip" aria-hidden="true">Visita sito web</span>
               </a>
             );
           }
           return (
             <div class="sponsor-card" tabindex="0">
-              <img src={logo.src} alt={logo.alt} loading="lazy" />
+              <Image src={logo.image} alt={logo.alt} height={LOGO_HEIGHT} loading="lazy" />
               <span class="sponsor-card__tooltip" aria-hidden="true">Visita sito web</span>
             </div>
           );
@@ -100,7 +106,9 @@ import SectionHeading from "../components/SectionHeading.astro";
     outline: none;
   }
 
-  .sponsor-card img {
+  /* :global() because the img is rendered by <Image> and doesn't carry this
+     component's scope attribute. */
+  .sponsor-card :global(img) {
     display: block;
     max-height: 100%;
     max-width: 100%;
