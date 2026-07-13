@@ -110,16 +110,6 @@ export const premioPremi = {
       title: "Un trofeo",
       text: "appositamente realizzato per il Premio “Rossella Panarese”",
     },
-    {
-      key: "viaggio",
-      title: "Un viaggio di 2 giorni",
-      text: "per una persona, da effettuarsi entro marzo 2027, presso l'European Astronaut Centre (EAC) dell'Agenzia Spaziale Europea (ESA), a Colonia",
-      includes: [
-        "volo aereo A/R con partenza da Roma o Milano;",
-        "soggiorno a Colonia per la durata prevista;",
-        "visita guidata ufficiale all'interno dell'European Astronaut Centre (EAC).",
-      ],
-    },
   ],
   noteHeading: "Note importanti",
   note: [

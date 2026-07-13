@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { festival, direttivo } from "../data/content";
+import { festival, direttivo, comitatoScientifico, giuriaPremio } from "../data/content";
 import SectionHeading from "../components/SectionHeading.astro";
 import StarIcon from "../components/StarIcon.astro";
 import rosellaImage from "../assets/rosella.png";
@@ -110,6 +110,27 @@ const AWARD_SIZE = 128;
         }
       </ul>
     </div>
+
+    {
+      [comitatoScientifico, giuriaPremio].map((group) => (
+        <div class="people reveal-up">
+          <h3 class="people__heading reveal-up">{group.heading}</h3>
+          <ul class="people__list">
+            {group.members.map((member) => (
+              <li class="people__card">
+                {member.photo ? (
+                  <img class="people__avatar" src={member.photo} alt={member.name} />
+                ) : (
+                  <span class="people__avatar people__avatar--placeholder" aria-hidden="true" />
+                )}
+                <span class="people__name">{member.name}</span>
+                <span class="people__role">{member.role}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
   </div>
 </section>
 
@@ -393,6 +414,85 @@ const AWARD_SIZE = 128;
     .direttivo__panel {
       padding-left: 1.5rem;
     }
+  }
+
+  /* People grids (Comitato scientifico, Giuria) */
+  .people {
+    margin-top: 4rem;
+    width: 100%;
+  }
+
+  .people__heading {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-primary-600);
+  }
+
+  @media (min-width: 640px) {
+    .people__heading {
+      font-size: 1.875rem;
+    }
+  }
+
+  .people__list {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  @media (min-width: 640px) {
+    .people__list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .people__list {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .people__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.75rem;
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+
+
+  .people__avatar {
+    height: 4.5rem;
+    width: 4.5rem;
+    border-radius: 9999px;
+    object-fit: cover;
+  }
+
+  .people__avatar--placeholder {
+    display: block;
+    background-color: var(--color-primary-100);
+  }
+
+  .people__name {
+    font-family: var(--font-primary);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-primary-600);
+  }
+
+  .people__role {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: rgba(var(--rgb-primary-600), 0.7);
   }
 </style>
 

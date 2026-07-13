@@ -1,0 +1,134 @@
+---
+import { Image } from "astro:assets";
+import { mainPartner } from "../data/content";
+import SectionHeading from "../components/SectionHeading.astro";
+
+// Same card size as the sponsor grid logos. 136px covers 2x displays.
+const LOGO_HEIGHT = 136;
+const url = "url" in mainPartner ? mainPartner.url : undefined;
+---
+
+<section id="main-partner" class="main-partner">
+  <div class="starfield"></div>
+  <div class="main-partner__inner container">
+    <SectionHeading eyebrow="In collaborazione con" title="Main Partner" dark />
+
+    <div class="main-partner__card-wrap reveal-up">
+      {
+        url ? (
+          <a
+            class="partner-card"
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${mainPartner.alt} — visita il sito web`}
+          >
+            <Image src={mainPartner.image} alt={mainPartner.alt} height={LOGO_HEIGHT} loading="lazy" />
+            <span class="partner-card__tooltip" aria-hidden="true">Visita sito web</span>
+          </a>
+        ) : (
+          <div class="partner-card" tabindex="0">
+            <Image src={mainPartner.image} alt={mainPartner.alt} height={LOGO_HEIGHT} loading="lazy" />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .main-partner {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-deep);
+    padding-block: 6rem;
+  }
+
+  @media (min-width: 640px) {
+    .main-partner {
+      padding-block: 8rem;
+    }
+  }
+
+  .main-partner__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 80rem;
+  }
+
+  .main-partner__card-wrap {
+    margin-top: 3.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .partner-card {
+    position: relative;
+    display: flex;
+    height: 5.5rem;
+    width: min(100%, 12rem);
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background-color: white;
+    padding: 0.625rem 0.875rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .partner-card:hover,
+  .partner-card:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(var(--rgb-black), 0.1);
+    outline: none;
+  }
+
+  /* :global() because the img is rendered by <Image> and doesn't carry this
+     component's scope attribute. */
+  .partner-card :global(img) {
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    object-position: center;
+    margin: 0 auto;
+  }
+
+  .partner-card__tooltip {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 50%;
+    z-index: 10;
+    transform: translate(-50%, 0.25rem);
+    white-space: nowrap;
+    border-radius: 0.375rem;
+    background-color: var(--color-deep);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: white;
+    box-shadow: 0 4px 10px rgba(var(--rgb-black), 0.15);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+
+  .partner-card__tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--color-deep);
+  }
+
+  .partner-card:hover .partner-card__tooltip,
+  .partner-card:focus-visible .partner-card__tooltip {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+</style>

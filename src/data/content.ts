@@ -73,8 +73,13 @@ export const sponsorLogos: Array<{ image: ImageMetadata; alt: string; url?: stri
   { image: sponsorImage("inclusione-donna.jpg"), alt: "#InclusioneDonna" },
   { image: sponsorImage("acca-tagliando.jpg"), alt: "Accatagliato" },
   { image: sponsorImage("alpm.webp"), alt: "ALPM" },
-  { image: sponsorImage("remedia-logo-positive.svg"), alt: "Remedia", url: "https://www.remediagroup.it/" },
 ];
+
+export const mainPartner: { image: ImageMetadata; alt: string; url?: string } = {
+  image: sponsorImage("remedia-logo-positive.svg"),
+  alt: "Remedia",
+  url: "https://www.remediagroup.it/",
+};
 
 export const festival = {
   heading: "Il Festival",
@@ -134,6 +139,39 @@ export const direttivo = {
       bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod, nisi vel consectetur euismod, nunc nisl aliquam nunc, vitae aliquam nisl nunc vitae nisl. Nam auctor, urna vitae tincidunt luctus, nisl nunc aliquam nunc.",
     },
   ] as DirettivoMember[],
+};
+
+export type PersonCard = {
+  name: string;
+  role: string;
+  photo?: string;
+};
+
+export const comitatoScientifico = {
+  heading: "Comitato scientifico",
+  members: [
+    { name: "Patrizia Caraveo", role: "Presidente del Comitato Scientifico" },
+    { name: "Amalia Finzi", role: "Da definire" },
+    { name: "Annamaria Nassisi", role: "Presidente del Festival" },
+    { name: "Bianca Maria Poggianti", role: "Da definire" },
+    { name: "Monica Lazzarin", role: "Da definire" },
+    { name: "Francesco Veltri", role: "Da definire" },
+  ] as PersonCard[],
+};
+
+export const giuriaPremio = {
+  heading: "Giuria Premio Rossella Panarese",
+  members: [
+    { name: "Paolo Conte", role: "Presidente della Giuria del premio Rossella Panarese" },
+    { name: "Alessandra Turco", role: "Da definire" },
+    { name: "Patrizia Caraveo", role: "Presidente del Comitato Scientifico" },
+    { name: "Francesco Veltri", role: "Da definire" },
+    { name: "Beatrice Martini", role: "Da definire" },
+    { name: "Stelvio Marini", role: "Da definire" },
+    { name: "Rossella Spiga", role: "Da definire" },
+    { name: "Annamaria Nassisi", role: "Presidente del Festival" },
+    { name: "Leonardo De Cosmo", role: "Da definire" },
+  ] as PersonCard[],
 };
 
 export type ProgrammeSession = {
@@ -749,4 +787,10 @@ export const contact = {
   presidentRole: "Presidente Festival",
   presidentEmail: "presidentefestival@donnefralestelle.com",
   formEndpoint: "https://formspree.io/f/REPLACE_WITH_FORM_ID",
+  socials: [
+    { name: "Facebook", href: "https://www.facebook.com/donnefralestelleodv" },
+    { name: "Instagram", href: "https://www.instagram.com/donnefralestelle.odv/" },
+    { name: "LinkedIn", href: "https://www.linkedin.com/in/donne-fra-le-stelle" },
+    { name: "YouTube", href: "https://www.youtube.com/@DonnefraleStelle" },
+  ] as const,
 };
