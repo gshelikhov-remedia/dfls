@@ -76,7 +76,7 @@ export const sponsorLogos: Array<{ image: ImageMetadata; alt: string; url?: stri
 ];
 
 export const mainPartner: { image: ImageMetadata; alt: string; url?: string } = {
-  image: sponsorImage("remedia-logo-positive.svg"),
+  image: sponsorImage("remedia-logo-white.svg"),
   alt: "Remedia",
   url: "https://www.remediagroup.it/",
 };
