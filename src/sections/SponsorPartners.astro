@@ -1,0 +1,198 @@
+---
+import { Image } from "astro:assets";
+import {
+  sponsorPartners,
+  sponsorTierBadges,
+  sponsorPartnersHeading,
+} from "../data/content";
+import SectionHeading from "../components/SectionHeading.astro";
+
+// Logos render at ~56px; 112px covers 2x displays.
+const LOGO_HEIGHT = 112;
+
+// Highest contribution first (Gold → Silver → Stella Nascente).
+const partners = [...sponsorPartners].sort(
+  (a, b) => sponsorTierBadges[a.tierKey].rank - sponsorTierBadges[b.tierKey].rank
+);
+---
+
+<section id="aziende-sponsor" class="partners">
+  <div class="partners__inner container">
+    <SectionHeading title={sponsorPartnersHeading.title} />
+    <p class="partners__intro">{sponsorPartnersHeading.eyebrow}</p>
+
+    <div class="partners__grid">
+      {
+        partners.map((partner) => {
+          const badge = sponsorTierBadges[partner.tierKey];
+          const Tag = partner.url ? "a" : "div";
+          const linkProps = partner.url
+            ? {
+                href: partner.url,
+                target: "_blank",
+                rel: "noopener noreferrer",
+                "aria-label": `${partner.name} — ${badge.label} — visita il sito web`,
+              }
+            : { tabindex: "0" };
+          return (
+            <Tag class={`partner-card reveal-up is-${partner.tierKey}`} {...linkProps}>
+              <span class="partner-card__badge">{badge.label}</span>
+              <div class="partner-card__logo">
+                {partner.image ? (
+                  <Image
+                    src={partner.image}
+                    alt={partner.name}
+                    height={LOGO_HEIGHT}
+                    loading="lazy"
+                  />
+                ) : (
+                  <span class="partner-card__name">{partner.name}</span>
+                )}
+              </div>
+            </Tag>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .partners {
+    position: relative;
+    background-color: var(--color-white, #ffffff);
+    padding-block: 6rem;
+  }
+
+  @media (min-width: 640px) {
+    .partners {
+      padding-block: 8rem;
+    }
+  }
+
+  .partners__inner {
+    max-width: 80rem;
+  }
+
+  .partners__intro {
+    margin-top: 0.875rem;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-primary-500);
+  }
+
+  .partners__grid {
+    margin-top: 3.5rem;
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 480px) {
+    .partners__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 768px) {
+    .partners__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .partners__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .partner-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 9.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-primary-100);
+    background-color: var(--color-mist);
+    padding: 2.5rem 1.25rem 1.5rem;
+    text-align: center;
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .partner-card:hover,
+  .partner-card:focus-visible {
+    transform: translateY(-4px);
+    border-color: rgba(var(--rgb-sky-400), 0.7);
+    box-shadow: 0 12px 24px rgba(var(--rgb-black), 0.08);
+    outline: none;
+  }
+
+  .partner-card__logo {
+    display: flex;
+    height: 3.5rem;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* :global() because <Image> renders the <img> without this component's
+     scope attribute. */
+  .partner-card__logo :global(img) {
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    object-position: center;
+    margin: 0 auto;
+  }
+
+  .partner-card__name {
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--color-primary-600);
+  }
+
+  /* Tier badge — hierarchy reads through fill intensity (brand tones only,
+     per DESIGN.md "One Accent Rule"); the label text carries the Gold/Silver
+     meaning. */
+  .partner-card__badge {
+    position: absolute;
+    top: 0.875rem;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .is-firmamento .partner-card__badge {
+    background-color: var(--color-primary-600);
+    color: white;
+  }
+
+  .is-cadente .partner-card__badge {
+    background-color: var(--color-sky-400);
+    color: var(--color-primary-600);
+  }
+
+  .is-nascente .partner-card__badge {
+    background-color: transparent;
+    border: 1px solid var(--color-sky-400);
+    color: var(--color-sky-600);
+  }
+</style>

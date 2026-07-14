@@ -81,6 +81,70 @@ export const mainPartner: { image: ImageMetadata; alt: string; url?: string } = 
   url: "https://www.remediagroup.it/",
 };
 
+// --- Aziende Sponsor 2026 -------------------------------------------------
+// Real, paying sponsors (distinct from the patrocini / institutional support
+// listed in `sponsorLogos`). Each company contributed at a level that maps to
+// one of the sponsorship tiers (see `tiers` below), shown as a badge.
+//
+// Logos are optional: drop a file named after `logoBase` (any extension) into
+// src/assets/sponsors/partners/ and it is picked up automatically; until then
+// the card shows the company name as text. Resolved eagerly at build time.
+const partnerLogoModules = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/sponsors/partners/*.{jpg,jpeg,png,webp,avif,svg}",
+  { eager: true }
+);
+
+function partnerLogo(base: string): ImageMetadata | undefined {
+  const match = Object.entries(partnerLogoModules).find(
+    ([path]) => path.split("/").pop()?.replace(/\.[^.]+$/, "") === base
+  );
+  return match?.[1].default;
+}
+
+// Badge key ties a sponsor to its tier; `tierKey` matches the `Tier.key`
+// values used in `tiers`, so the badge label/order stays in sync with the
+// sponsorship packages.
+export type SponsorTierKey = "firmamento" | "cadente" | "nascente";
+
+export type PartnerSponsor = {
+  name: string;
+  tierKey: SponsorTierKey;
+  logoBase: string;
+  image?: ImageMetadata;
+  url?: string;
+};
+
+// Badge display + sort order (highest contribution first).
+export const sponsorTierBadges: Record<
+  SponsorTierKey,
+  { label: string; rank: number }
+> = {
+  firmamento: { label: "Gold", rank: 0 },
+  cadente: { label: "Silver", rank: 1 },
+  nascente: { label: "Stella Nascente", rank: 2 },
+};
+
+export const sponsorPartnersHeading = {
+  eyebrow: "Le aziende che ci sostengono",
+  title: "Aziende Sponsor 2026",
+};
+
+const partnerData: Array<Omit<PartnerSponsor, "image">> = [
+  { name: "ALTEC", tierKey: "firmamento", logoBase: "altec", url: "https://www.altecspace.it/" },
+  { name: "CIRA", tierKey: "cadente", logoBase: "cira", url: "https://www.cira.it/" },
+  { name: "IRCA Zoppas Industries", tierKey: "cadente", logoBase: "irca-zoppas", url: "https://zoppasindustries.com/en/" },
+  { name: "Latitudo40", tierKey: "cadente", logoBase: "latitudo40", url: "https://www.latitudo40.com/" },
+  { name: "Serco Europe", tierKey: "cadente", logoBase: "serco", url: "https://www.serco.com/eu/sector-expertise/space" },
+  { name: "G&A Engineering", tierKey: "nascente", logoBase: "g-a-engineering", url: "https://www.gaengineering.com/" },
+  { name: "Next Ingegneria dei Sistemi", tierKey: "nascente", logoBase: "next-ingegneria", url: "https://www.next.it/" },
+  { name: "Planetek Italia", tierKey: "nascente", logoBase: "planetek", url: "https://www.planetek.it/en" },
+];
+
+export const sponsorPartners: PartnerSponsor[] = partnerData.map((s) => ({
+  ...s,
+  image: partnerLogo(s.logoBase),
+}));
+
 export const festival = {
   heading: "Il Festival",
   paragraphs: [
